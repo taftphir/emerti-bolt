@@ -5,8 +5,22 @@ import { Vessel } from '../../types/vessel';
 
 export default function VesselMap() {
   const [selectedVessel, setSelectedVessel] = useState<Vessel | null>(null);
-  const [mapCenter] = useState({ lat: -7.0, lng: 113.8 }); // Madura Island center
   const [mapLoaded, setMapLoaded] = useState(false);
+
+  // Map bounds for Madura Island area
+  const mapBounds = {
+    north: -6.5,
+    south: -7.5,
+    east: 115.1,
+    west: 112.5
+  };
+
+  // Convert lat/lng to pixel position within the map container
+  const latLngToPixel = (lat: number, lng: number) => {
+    const x = ((lng - mapBounds.west) / (mapBounds.east - mapBounds.west)) * 100;
+    const y = ((mapBounds.north - lat) / (mapBounds.north - mapBounds.south)) * 100;
+    return { x: Math.max(0, Math.min(100, x)), y: Math.max(0, Math.min(100, y)) };
+  };
 
   useEffect(() => {
     // Simulate map loading
@@ -63,16 +77,8 @@ export default function VesselMap() {
               
               {/* Vessel markers overlay */}
               <div className="absolute inset-0 pointer-events-none">
-                {mockVessels.map((vessel, index) => {
-                  // Position vessels in sea around Madura Island
-                  const positions = [
-                    { x: 25, y: 30 }, // North of Madura
-                    { x: 75, y: 45 }, // East of Madura
-                    { x: 60, y: 75 }, // South of Madura
-                    { x: 15, y: 60 }  // West of Madura
-                  ];
-                  
-                  const position = positions[index % positions.length];
+                {mockVessels.map((vessel) => {
+                  const position = latLngToPixel(vessel.position.lat, vessel.position.lng);
                   
                   return (
                     <div
@@ -86,14 +92,18 @@ export default function VesselMap() {
                       }}
                       onClick={() => setSelectedVessel(vessel)}
                     >
-                      <div className={`relative p-2 rounded-full ${getStatusBg(vessel.status)} border-2 transition-transform hover:scale-110 ${
+                      <div className={`relative p-1 rounded-full ${getStatusBg(vessel.status)} border-2 transition-transform hover:scale-110 ${
                         selectedVessel?.id === vessel.id ? 'scale-125' : ''
-                      } shadow-lg`}>
-                        <Navigation 
-                          size={12} 
-                          className={`sm:w-4 sm:h-4 ${getStatusColor(vessel.status)}`}
+                      } shadow-lg bg-white`}>
+                        <img 
+                          src="/ship.png"
+                          alt="Vessel"
+                          className="w-6 h-6 sm:w-8 sm:h-8 object-contain"
                           style={{ transform: `rotate(${vessel.heading}deg)` }}
                         />
+                        <div className="absolute -bottom-1 -right-1 w-3 h-3 sm:w-4 sm:h-4 rounded-full border border-white shadow-sm"
+                             style={{ backgroundColor: vessel.status === 'Active' ? '#10b981' : vessel.status === 'Warning' ? '#f59e0b' : '#ef4444' }}>
+                        </div>
                         {selectedVessel?.id === vessel.id && (
                           <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg p-2 sm:p-3 min-w-32 sm:min-w-48 z-50">
                             <h4 className="text-sm sm:text-base font-semibold text-gray-800">{vessel.name}</h4>

@@ -6,9 +6,9 @@ export const mockVessels: Vessel[] = [
     name: 'Sinar Bahari',
     type: 'Cargo',
     status: 'Active',
-    position: { lat: -6.8, lng: 113.5 }, // North of Madura Island
+    position: { lat: -6.7, lng: 113.8 }, // North of Madura Island (sea)
     speed: 12.5,
-    heading: 45,
+    heading: 135, // Southeast direction
     rpmPortside: 1850,
     rpmStarboard: 1820,
     rpmCenter: 1835,
@@ -20,9 +20,9 @@ export const mockVessels: Vessel[] = [
     name: 'Maritim Jaya',
     type: 'Tanker',
     status: 'Warning',
-    position: { lat: -7.1, lng: 114.2 }, // East of Madura Island
+    position: { lat: -7.0, lng: 114.3 }, // East of Madura Island (sea)
     speed: 8.3,
-    heading: 180,
+    heading: 270, // West direction
     rpmPortside: 1200,
     rpmStarboard: 1180,
     rpmCenter: 1190,
@@ -34,9 +34,9 @@ export const mockVessels: Vessel[] = [
     name: 'Ocean Pioneer',
     type: 'Container',
     status: 'Active',
-    position: { lat: -7.3, lng: 113.9 }, // South of Madura Island
+    position: { lat: -7.4, lng: 113.6 }, // South of Madura Island (sea)
     speed: 15.2,
-    heading: 270,
+    heading: 45, // Northeast direction
     rpmPortside: 2100,
     rpmStarboard: 2080,
     rpmCenter: 2095,
@@ -48,9 +48,9 @@ export const mockVessels: Vessel[] = [
     name: 'Nusantara Express',
     type: 'Ferry',
     status: 'Critical',
-    position: { lat: -7.0, lng: 113.2 }, // West of Madura Island
+    position: { lat: -6.9, lng: 112.7 }, // West of Madura Island (sea)
     speed: 5.1,
-    heading: 90,
+    heading: 90, // East direction
     rpmPortside: 800,
     rpmStarboard: 820,
     rpmCenter: 810,
