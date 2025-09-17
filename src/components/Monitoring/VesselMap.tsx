@@ -1,11 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { MapPin, Navigation, Zap, Clock } from 'lucide-react';
 import { mockVessels } from '../../data/mockData';
 import { Vessel } from '../../types/vessel';
 
 export default function VesselMap() {
   const [selectedVessel, setSelectedVessel] = useState<Vessel | null>(null);
-  const [mapCenter] = useState({ lat: -6.2088, lng: 106.8456 });
+  const [mapCenter] = useState({ lat: -7.0, lng: 113.8 }); // Madura Island center
+  const [mapLoaded, setMapLoaded] = useState(false);
+
+  useEffect(() => {
+    // Simulate map loading
+    const timer = setTimeout(() => setMapLoaded(true), 1000);
+    return () => clearTimeout(timer);
+  }, []);
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -29,38 +36,59 @@ export default function VesselMap() {
     <div>
       <div className="mb-6">
         <h2 className="text-xl sm:text-2xl font-bold text-gray-800">Vessel Location Map</h2>
-        <p className="text-sm sm:text-base text-gray-600">Real-time fleet positioning and tracking</p>
+        <p className="text-sm sm:text-base text-gray-600">Real-time fleet positioning around Madura Island, Indonesia</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 sm:gap-6">
         <div className="lg:col-span-3">
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-            <div className="h-64 sm:h-80 lg:h-96 bg-blue-50 relative">
-              {/* Simplified map visualization */}
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-100 to-blue-200">
-                <div className="absolute top-2 sm:top-4 left-2 sm:left-4 bg-white rounded-lg shadow-sm p-1 sm:p-2">
-                  <p className="text-xs text-gray-600">Jakarta Bay</p>
+            <div className="h-64 sm:h-80 lg:h-96 relative">
+              {/* OpenStreetMap iframe */}
+              <iframe
+                src="https://www.openstreetmap.org/export/embed.html?bbox=112.5%2C-7.5%2C115.1%2C-6.5&layer=mapnik&marker=-7.0%2C113.8"
+                className="w-full h-full border-0"
+                title="Madura Island Map"
+                onLoad={() => setMapLoaded(true)}
+              />
+              
+              {/* Loading overlay */}
+              {!mapLoaded && (
+                <div className="absolute inset-0 bg-blue-50 flex items-center justify-center">
+                  <div className="text-center">
+                    <div className="animate-spin w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full mx-auto mb-2"></div>
+                    <p className="text-sm text-gray-600">Loading map...</p>
+                  </div>
                 </div>
-                
-                {mockVessels.map((vessel) => {
-                  const x = ((vessel.position.lng - 106.8000) / 0.1) * 100;
-                  const y = ((vessel.position.lat + 6.1500) / 0.1) * 100;
+              )}
+              
+              {/* Vessel markers overlay */}
+              <div className="absolute inset-0 pointer-events-none">
+                {mockVessels.map((vessel, index) => {
+                  // Position vessels in sea around Madura Island
+                  const positions = [
+                    { x: 25, y: 30 }, // North of Madura
+                    { x: 75, y: 45 }, // East of Madura
+                    { x: 60, y: 75 }, // South of Madura
+                    { x: 15, y: 60 }  // West of Madura
+                  ];
+                  
+                  const position = positions[index % positions.length];
                   
                   return (
                     <div
                       key={vessel.id}
-                      className={`absolute transform -translate-x-1/2 -translate-y-1/2 cursor-pointer ${
+                      className={`absolute transform -translate-x-1/2 -translate-y-1/2 cursor-pointer pointer-events-auto ${
                         selectedVessel?.id === vessel.id ? 'z-20' : 'z-10'
                       }`}
                       style={{
-                        left: `${Math.max(10, Math.min(90, x))}%`,
-                        top: `${Math.max(10, Math.min(90, y))}%`,
+                        left: `${position.x}%`,
+                        top: `${position.y}%`,
                       }}
                       onClick={() => setSelectedVessel(vessel)}
                     >
                       <div className={`relative p-2 rounded-full ${getStatusBg(vessel.status)} border-2 transition-transform hover:scale-110 ${
                         selectedVessel?.id === vessel.id ? 'scale-125' : ''
-                      }`}>
+                      } shadow-lg`}>
                         <Navigation 
                           size={12} 
                           className={`sm:w-4 sm:h-4 ${getStatusColor(vessel.status)}`}
@@ -91,7 +119,13 @@ export default function VesselMap() {
                 })}
               </div>
               
-              <div className="absolute bottom-2 sm:bottom-4 right-2 sm:right-4 bg-white rounded-lg shadow-sm p-1 sm:p-2">
+              {/* Map controls and legend */}
+              <div className="absolute top-2 sm:top-4 left-2 sm:left-4 bg-white rounded-lg shadow-sm p-2 sm:p-3">
+                <h3 className="text-xs sm:text-sm font-semibold text-gray-800 mb-1">Madura Island</h3>
+                <p className="text-xs text-gray-600">East Java, Indonesia</p>
+              </div>
+              
+              <div className="absolute bottom-2 sm:bottom-4 right-2 sm:right-4 bg-white rounded-lg shadow-sm p-2 sm:p-3">
                 <div className="flex items-center space-x-2 text-xs text-gray-600">
                   <div className="flex items-center space-x-1">
                     <div className="w-2 h-2 sm:w-3 sm:h-3 bg-green-500 rounded-full"></div>
@@ -106,6 +140,18 @@ export default function VesselMap() {
                     <span className="hidden sm:inline">Critical</span>
                   </div>
                 </div>
+              </div>
+
+              {/* OpenStreetMap attribution */}
+              <div className="absolute bottom-2 left-2 bg-white bg-opacity-80 rounded px-2 py-1">
+                <a 
+                  href="https://www.openstreetmap.org/copyright" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-xs text-blue-600 hover:underline"
+                >
+                  © OpenStreetMap
+                </a>
               </div>
             </div>
           </div>
@@ -176,6 +222,10 @@ export default function VesselMap() {
                 <div className="flex justify-between">
                   <span className="text-gray-600">Fuel:</span>
                   <span className="font-medium">{selectedVessel.fuelConsumption.toFixed(1)} L/h</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Location:</span>
+                  <span className="font-medium text-xs">Madura Waters</span>
                 </div>
               </div>
             </div>
