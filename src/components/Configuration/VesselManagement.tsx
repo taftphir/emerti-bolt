@@ -7,6 +7,8 @@ export default function VesselManagement() {
   const [vessels, setVessels] = useState<Vessel[]>(mockVessels);
   const [showModal, setShowModal] = useState(false);
   const [editingVessel, setEditingVessel] = useState<Vessel | null>(null);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string>('');
   const [formData, setFormData] = useState({
     name: '',
     type: 'Cargo',
@@ -17,14 +19,6 @@ export default function VesselManagement() {
     emsActive: true,
     fmsActive: true,
     vesselKey: '',
-    lat: 0,
-    lng: 0,
-    speed: 0,
-    heading: 0,
-    rpmPortside: 0,
-    rpmStarboard: 0,
-    rpmCenter: 0,
-    fuelConsumption: 0
   });
 
   const handleAdd = () => {
@@ -39,15 +33,9 @@ export default function VesselManagement() {
       emsActive: true,
       fmsActive: true,
       vesselKey: '',
-      lat: -7.0,
-      lng: 113.8,
-      speed: 0,
-      heading: 0,
-      rpmPortside: 0,
-      rpmStarboard: 0,
-      rpmCenter: 0,
-      fuelConsumption: 0
     });
+    setImageFile(null);
+    setImagePreview('');
     setShowModal(true);
   };
 
@@ -63,16 +51,28 @@ export default function VesselManagement() {
       emsActive: vessel.emsActive,
       fmsActive: vessel.fmsActive,
       vesselKey: vessel.vesselKey,
-      lat: vessel.position.lat,
-      lng: vessel.position.lng,
-      speed: vessel.speed,
-      heading: vessel.heading,
-      rpmPortside: vessel.rpmPortside,
-      rpmStarboard: vessel.rpmStarboard,
-      rpmCenter: vessel.rpmCenter,
-      fuelConsumption: vessel.fuelConsumption
     });
+    setImageFile(null);
+    setImagePreview(vessel.image || '');
     setShowModal(true);
+  };
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setImageFile(file);
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setImagePreview(e.target?.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleImageDelete = () => {
+    setImageFile(null);
+    setImagePreview('');
+    setFormData({...formData, image: ''});
   };
 
   const handleDelete = (vesselId: string) => {
@@ -84,6 +84,9 @@ export default function VesselManagement() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
+    // Handle image - in real app, you'd upload to server and get URL
+    const imageUrl = imageFile ? imagePreview : formData.image;
+    
     if (editingVessel) {
       // Update existing vessel
       setVessels(vessels.map(vessel => 
@@ -93,19 +96,12 @@ export default function VesselManagement() {
               name: formData.name,
               type: formData.type,
               status: formData.status,
-              image: formData.image,
+              image: imageUrl,
               owner: formData.owner,
               vtsActive: formData.vtsActive,
               emsActive: formData.emsActive,
               fmsActive: formData.fmsActive,
               vesselKey: formData.vesselKey,
-              position: { lat: formData.lat, lng: formData.lng },
-              speed: formData.speed,
-              heading: formData.heading,
-              rpmPortside: formData.rpmPortside,
-              rpmStarboard: formData.rpmStarboard,
-              rpmCenter: formData.rpmCenter,
-              fuelConsumption: formData.fuelConsumption,
               lastUpdate: new Date()
             }
           : vessel
@@ -117,19 +113,19 @@ export default function VesselManagement() {
         name: formData.name,
         type: formData.type,
         status: formData.status,
-        image: formData.image,
+        image: imageUrl,
         owner: formData.owner,
         vtsActive: formData.vtsActive,
         emsActive: formData.emsActive,
         fmsActive: formData.fmsActive,
         vesselKey: formData.vesselKey,
-        position: { lat: formData.lat, lng: formData.lng },
-        speed: formData.speed,
-        heading: formData.heading,
-        rpmPortside: formData.rpmPortside,
-        rpmStarboard: formData.rpmStarboard,
-        rpmCenter: formData.rpmCenter,
-        fuelConsumption: formData.fuelConsumption,
+        position: { lat: -7.0, lng: 113.8 }, // Default position
+        speed: 0,
+        heading: 0,
+        rpmPortside: 0,
+        rpmStarboard: 0,
+        rpmCenter: 0,
+        fuelConsumption: 0,
         lastUpdate: new Date()
       };
       setVessels([...vessels, newVessel]);
@@ -272,7 +268,7 @@ export default function VesselManagement() {
       {/* Modal */}
       {showModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-screen overflow-y-auto">
+          <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-screen overflow-y-auto">
             <div className="flex items-center justify-between p-6 border-b">
               <h3 className="text-lg font-semibold text-gray-800">
                 {editingVessel ? 'Edit Vessel' : 'Add New Vessel'}
@@ -288,7 +284,7 @@ export default function VesselManagement() {
             <form onSubmit={handleSubmit} className="p-6 space-y-6">
               {/* Basic Information */}
               <div>
-                <h4 className="text-md font-semibold text-gray-800 mb-4">Basic Information</h4>
+                <h4 className="text-md font-semibold text-gray-800 mb-4">Vessel Information</h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -349,16 +345,65 @@ export default function VesselManagement() {
                   </div>
                   
                   <div className="md:col-span-2">
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Vessel Image URL
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Vessel Image
                     </label>
-                    <input
-                      type="url"
-                      value={formData.image}
-                      onChange={(e) => setFormData({...formData, image: e.target.value})}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      placeholder="https://example.com/vessel-image.jpg"
-                    />
+                    
+                    {/* Image Preview */}
+                    {imagePreview && (
+                      <div className="mb-4 relative inline-block">
+                        <img 
+                          src={imagePreview} 
+                          alt="Vessel preview"
+                          className="w-32 h-32 object-cover rounded-lg border border-gray-300"
+                        />
+                        <button
+                          type="button"
+                          onClick={handleImageDelete}
+                          className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center hover:bg-red-600 text-sm"
+                          title="Delete image"
+                        >
+                          ×
+                        </button>
+                      </div>
+                    )}
+                    
+                    {/* Image Upload */}
+                    <div className="flex items-center space-x-4">
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleImageUpload}
+                        className="hidden"
+                        id="vessel-image-upload"
+                      />
+                      <label
+                        htmlFor="vessel-image-upload"
+                        className="cursor-pointer bg-blue-50 border border-blue-200 text-blue-600 px-4 py-2 rounded-md hover:bg-blue-100 transition-colors"
+                      >
+                        {imagePreview ? 'Change Image' : 'Upload Image'}
+                      </label>
+                      
+                      {/* Alternative: URL Input */}
+                      <span className="text-gray-500">or</span>
+                      <div className="flex-1">
+                        <input
+                          type="url"
+                          value={formData.image}
+                          onChange={(e) => {
+                            setFormData({...formData, image: e.target.value});
+                            if (e.target.value && !imageFile) {
+                              setImagePreview(e.target.value);
+                            }
+                          }}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                          placeholder="Or paste image URL"
+                        />
+                      </div>
+                    </div>
+                    <p className="text-xs text-gray-500 mt-1">
+                      Upload an image file or paste an image URL
+                    </p>
                   </div>
                   
                   <div className="md:col-span-2">
@@ -422,116 +467,6 @@ export default function VesselManagement() {
                 </div>
               </div>
 
-              {/* Position & Performance */}
-              <div>
-                <h4 className="text-md font-semibold text-gray-800 mb-4">Position & Performance</h4>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Latitude *
-                    </label>
-                    <input
-                      type="number"
-                      step="0.0001"
-                      value={formData.lat}
-                      onChange={(e) => setFormData({...formData, lat: parseFloat(e.target.value) || 0})}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      required
-                    />
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Longitude *
-                    </label>
-                    <input
-                      type="number"
-                      step="0.0001"
-                      value={formData.lng}
-                      onChange={(e) => setFormData({...formData, lng: parseFloat(e.target.value) || 0})}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      required
-                    />
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Speed (knots)
-                    </label>
-                    <input
-                      type="number"
-                      step="0.1"
-                      value={formData.speed}
-                      onChange={(e) => setFormData({...formData, speed: parseFloat(e.target.value) || 0})}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Heading (degrees)
-                    </label>
-                    <input
-                      type="number"
-                      min="0"
-                      max="360"
-                      value={formData.heading}
-                      onChange={(e) => setFormData({...formData, heading: parseInt(e.target.value) || 0})}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Fuel Consumption (L/h)
-                    </label>
-                    <input
-                      type="number"
-                      step="0.1"
-                      value={formData.fuelConsumption}
-                      onChange={(e) => setFormData({...formData, fuelConsumption: parseFloat(e.target.value) || 0})}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      RPM Portside
-                    </label>
-                    <input
-                      type="number"
-                      value={formData.rpmPortside}
-                      onChange={(e) => setFormData({...formData, rpmPortside: parseInt(e.target.value) || 0})}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      RPM Starboard
-                    </label>
-                    <input
-                      type="number"
-                      value={formData.rpmStarboard}
-                      onChange={(e) => setFormData({...formData, rpmStarboard: parseInt(e.target.value) || 0})}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      RPM Center
-                    </label>
-                    <input
-                      type="number"
-                      value={formData.rpmCenter}
-                      onChange={(e) => setFormData({...formData, rpmCenter: parseInt(e.target.value) || 0})}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                  </div>
-                </div>
-              </div>
-              
               <div className="flex space-x-3 pt-4 border-t">
                 <button
                   type="button"
