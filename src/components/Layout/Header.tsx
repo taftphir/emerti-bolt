@@ -26,6 +26,11 @@ export default function Header({ activeSection }: HeaderProps) {
           title: 'Vessel Location Map',
           subtitle: 'Real-time fleet positioning around Madura Island, Indonesia'
         };
+      case 'data-history':
+        return {
+          title: 'Data History',
+          subtitle: 'Historical vessel tracking data with advanced filtering'
+        };
       case 'daily-report':
         return {
           title: 'Daily Report',

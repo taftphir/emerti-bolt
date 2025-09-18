@@ -34,3 +34,16 @@ export interface DashboardStats {
   warningCount: number;
   criticalCount: number;
 }
+export interface HistoryRecord {
+  id: string;
+  vesselId: string;
+  vesselName: string;
+  timestamp: Date;
+  latitude: number;
+  longitude: number;
+  speed: number;
+  heading: number;
+  rpmPortside: number;
+  rpmStarboard: number;
+  rpmCenter: number;
+}

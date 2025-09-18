@@ -1,4 +1,5 @@
 import { Vessel, DashboardStats } from '../types/vessel';
+import { HistoryRecord } from '../types/vessel';
 
 export const mockVessels: Vessel[] = [
   {
@@ -172,6 +173,33 @@ export const getDashboardStats = (): DashboardStats => {
   };
 };
 
+// Generate mock history data
+export const generateHistoryData = (): HistoryRecord[] => {
+  const records: HistoryRecord[] = [];
+  const now = new Date();
+  
+  mockVessels.forEach((vessel) => {
+    // Generate 100 records per vessel over the last 7 days
+    for (let i = 0; i < 100; i++) {
+      const timestamp = new Date(now.getTime() - (i * 2 * 60 * 60 * 1000)); // Every 2 hours
+      records.push({
+        id: `${vessel.id}-${i}`,
+        vesselId: vessel.id,
+        vesselName: vessel.name,
+        timestamp,
+        latitude: vessel.position.lat + (Math.random() - 0.5) * 0.1,
+        longitude: vessel.position.lng + (Math.random() - 0.5) * 0.1,
+        speed: Math.max(0, vessel.speed + (Math.random() - 0.5) * 8),
+        heading: Math.floor(Math.random() * 360),
+        rpmPortside: Math.max(0, vessel.rpmPortside + (Math.random() - 0.5) * 400),
+        rpmStarboard: Math.max(0, vessel.rpmStarboard + (Math.random() - 0.5) * 400),
+        rpmCenter: Math.max(0, vessel.rpmCenter + (Math.random() - 0.5) * 400),
+      });
+    }
+  });
+  
+  return records.sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime());
+};
 // Generate hourly data for charts
 export const generateHourlyData = (vessel: Vessel) => {
   const hours = [];
