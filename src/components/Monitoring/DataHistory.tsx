@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { Search, Filter, Download, Calendar, Clock, MapPin, Navigation, Gauge, ChevronDown, X } from 'lucide-react';
-import { generateHistoryData } from '../../data/mockData';
+import { getHistoryData } from '../../data/mockData';
 import { mockVessels } from '../../data/mockData';
 import { HistoryRecord } from '../../types/vessel';
 
@@ -20,7 +20,7 @@ interface GroupingState {
 }
 
 export default function DataHistory() {
-  const [historyData] = useState<HistoryRecord[]>(generateHistoryData());
+  const [historyData] = useState<HistoryRecord[]>(getHistoryData());
   const [showFilters, setShowFilters] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const recordsPerPage = 50;
