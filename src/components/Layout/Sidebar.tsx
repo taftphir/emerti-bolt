@@ -109,8 +109,12 @@ export default function Sidebar({ activeSection, onSectionChange }: SidebarProps
                 title={isCollapsed ? item.label : ''}
               >
                 <item.icon size={20} />
-                {!isCollapsed && <span className="hidden lg:inline">{item.label}</span>}
-                <span className={`${isCollapsed ? 'hidden' : 'lg:hidden'}`}>{item.label}</span>
+                {!isCollapsed && (
+                  <>
+                    <span className="hidden lg:inline">{item.label}</span>
+                    <span className="lg:hidden">{item.label}</span>
+                  </>
+                )}
               </button>
             );
           }
@@ -119,12 +123,16 @@ export default function Sidebar({ activeSection, onSectionChange }: SidebarProps
 
         {Object.entries(sections).map(([sectionId, sectionLabel]) => (
           <div key={sectionId} className="mt-6">
-            {!isCollapsed && (
+            <div className="lg:block">
+              {!isCollapsed ? (
+                <h3 className="text-blue-300 text-xs sm:text-sm font-semibold mb-2 px-4">{sectionLabel}</h3>
+              ) : (
+                <div className="border-t border-blue-700 mx-2 mb-2"></div>
+              )}
+            </div>
+            <div className="lg:hidden">
               <h3 className="text-blue-300 text-xs sm:text-sm font-semibold mb-2 px-4">{sectionLabel}</h3>
-            )}
-            {isCollapsed && (
-              <div className="hidden lg:block border-t border-blue-700 mx-2 mb-2"></div>
-            )}
+            </div>
             {menuItems
               .filter(item => item.parent === sectionId)
               .map(item => (
@@ -139,8 +147,12 @@ export default function Sidebar({ activeSection, onSectionChange }: SidebarProps
                   title={isCollapsed ? item.label : ''}
                 >
                   <item.icon size={18} />
-                  {!isCollapsed && <span className="text-xs sm:text-sm hidden lg:inline">{item.label}</span>}
-                  <span className={`text-xs sm:text-sm ${isCollapsed ? 'hidden' : 'lg:hidden'}`}>{item.label}</span>
+                  {!isCollapsed && (
+                    <>
+                      <span className="text-xs sm:text-sm hidden lg:inline">{item.label}</span>
+                      <span className="text-xs sm:text-sm lg:hidden">{item.label}</span>
+                    </>
+                  )}
                 </button>
               ))}
           </div>
