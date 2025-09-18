@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { Layers, Plus, Edit, Trash2, X } from 'lucide-react';
 import { vesselTypeService } from '../../services/vesselTypeService';
 import { UnitType } from '../../types/database';
