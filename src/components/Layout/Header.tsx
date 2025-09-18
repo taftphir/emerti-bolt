@@ -10,10 +10,10 @@ export default function Header() {
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-800 ml-12 lg:ml-0">
-            Vessel Monitoring Dashboard
+            Dashboard Overview
           </h2>
           <p className="text-sm sm:text-base text-gray-600 ml-12 lg:ml-0 hidden sm:block">
-            Real-time fleet management system
+            Real-time fleet monitoring and status
           </p>
         </div>
         

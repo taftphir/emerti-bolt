@@ -10,8 +10,7 @@ import {
   Layers,
   Menu,
   X,
-  ChevronLeft,
-  ChevronRight
+  Menu as MenuIcon
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -59,15 +58,6 @@ export default function Sidebar({ activeSection, onSectionChange }: SidebarProps
       >
         {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
       </button>
-
-      {/* Desktop collapse button */}
-      <button
-        onClick={toggleCollapse}
-        className="hidden lg:block fixed top-4 left-4 z-50 bg-blue-900 text-white p-2 rounded-lg shadow-lg transition-all duration-300"
-        style={{ left: isCollapsed ? '4rem' : '15rem' }}
-      >
-        {isCollapsed ? <ChevronRight size={20} /> : <ChevronLeft size={20} />}
-      </button>
       {/* Mobile overlay */}
       {isMobileMenuOpen && (
         <div 
@@ -82,6 +72,14 @@ export default function Sidebar({ activeSection, onSectionChange }: SidebarProps
         lg:relative lg:translate-x-0 ${isCollapsed ? 'lg:w-16' : 'lg:w-64'}
         fixed w-64 ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}
       `}>
+        {/* Desktop hamburger button */}
+        <button
+          onClick={toggleCollapse}
+          className="hidden lg:block absolute top-4 right-4 text-white hover:bg-blue-800 p-1 rounded"
+        >
+          <MenuIcon size={20} />
+        </button>
+        
       <div className={`mb-8 ${isCollapsed ? 'lg:text-center' : ''}`}>
         {!isCollapsed && (
           <>

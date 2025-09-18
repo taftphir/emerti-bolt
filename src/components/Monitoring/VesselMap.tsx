@@ -54,7 +54,7 @@ export default function VesselMap() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 sm:gap-6">
-        <div className="lg:col-span-3">
+        <div className="lg:col-span-4">
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
             <div className="h-64 sm:h-80 lg:h-96 relative">
               {/* OpenStreetMap iframe */}
@@ -171,81 +171,6 @@ export default function VesselMap() {
               </div>
             </div>
           </div>
-        </div>
-
-        <div className="space-y-4 max-h-screen overflow-y-auto">
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
-            <h3 className="text-sm sm:text-base font-semibold text-gray-800 mb-3">Fleet Overview</h3>
-            <div className="space-y-2">
-              {mockVessels.map((vessel) => (
-                <div
-                  key={vessel.id}
-                  className={`p-3 rounded-lg border cursor-pointer transition-colors ${
-                    selectedVessel?.id === vessel.id 
-                      ? 'bg-blue-50 border-blue-300' 
-                      : 'hover:bg-gray-50 border-gray-200'
-                  }`}
-                  onClick={() => setSelectedVessel(vessel)}
-                >
-                  <div className="flex items-center justify-between mb-1">
-                    <h4 className="font-medium text-gray-800 text-xs sm:text-sm">{vessel.name}</h4>
-                    <div className={`w-2 h-2 rounded-full ${
-                      vessel.status === 'Active' ? 'bg-green-500' :
-                      vessel.status === 'Warning' ? 'bg-yellow-500' : 'bg-red-500'
-                    }`}></div>
-                  </div>
-                  <div className="text-xs text-gray-600 space-y-1">
-                    <div className="flex items-center justify-between">
-                      <span className="truncate">{vessel.type}</span>
-                      <span>{vessel.speed.toFixed(1)} kts</span>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {selectedVessel && (
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
-              <h3 className="text-sm sm:text-base font-semibold text-gray-800 mb-3">Vessel Details</h3>
-              <div className="space-y-2 text-sm">
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Vessel ID:</span>
-                  <span className="font-medium">{selectedVessel.id}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Type:</span>
-                  <span className="font-medium">{selectedVessel.type}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Status:</span>
-                  <span className={`font-medium ${getStatusColor(selectedVessel.status)}`}>
-                    {selectedVessel.status}
-                  </span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Speed:</span>
-                  <span className="font-medium">{selectedVessel.speed.toFixed(1)} kts</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Heading:</span>
-                  <span className="font-medium">{selectedVessel.heading}°</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Fuel:</span>
-                  <span className="font-medium">{selectedVessel.fuelConsumption.toFixed(1)} L/h</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Location:</span>
-                  <span className="font-medium text-xs">Madura Waters</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Last Update:</span>
-                  <span className="font-medium text-xs">{selectedVessel.lastUpdate.toLocaleTimeString()}</span>
-                </div>
-              </div>
-            </div>
-          )}
         </div>
       </div>
     </div>
