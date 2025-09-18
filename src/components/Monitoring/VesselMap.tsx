@@ -104,8 +104,14 @@ export default function VesselMap() {
                         <div className="absolute -bottom-1 -right-1 w-3 h-3 sm:w-4 sm:h-4 rounded-full border border-white shadow-sm"
                              style={{ backgroundColor: vessel.status === 'Active' ? '#10b981' : vessel.status === 'Warning' ? '#f59e0b' : '#ef4444' }}>
                         </div>
+                        
+                        {/* Vessel name label */}
+                        <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 bg-white border border-gray-300 rounded px-2 py-1 shadow-sm">
+                          <span className="text-xs font-medium text-gray-800 whitespace-nowrap">{vessel.name}</span>
+                        </div>
+                        
                         {selectedVessel?.id === vessel.id && (
-                          <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg p-2 sm:p-3 min-w-32 sm:min-w-48 z-50">
+                          <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-8 bg-white border border-gray-200 rounded-lg shadow-lg p-2 sm:p-3 min-w-32 sm:min-w-48 z-50">
                             <h4 className="text-sm sm:text-base font-semibold text-gray-800">{vessel.name}</h4>
                             <div className="text-xs text-gray-600 mt-1 space-y-1">
                               <div className="flex justify-between">
@@ -167,10 +173,10 @@ export default function VesselMap() {
           </div>
         </div>
 
-        <div className="space-y-4">
+        <div className="space-y-4 max-h-screen overflow-y-auto">
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
             <h3 className="text-sm sm:text-base font-semibold text-gray-800 mb-3">Fleet Overview</h3>
-            <div className="space-y-3">
+            <div className="space-y-2">
               {mockVessels.map((vessel) => (
                 <div
                   key={vessel.id}
@@ -181,7 +187,7 @@ export default function VesselMap() {
                   }`}
                   onClick={() => setSelectedVessel(vessel)}
                 >
-                  <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center justify-between mb-1">
                     <h4 className="font-medium text-gray-800 text-xs sm:text-sm">{vessel.name}</h4>
                     <div className={`w-2 h-2 rounded-full ${
                       vessel.status === 'Active' ? 'bg-green-500' :
@@ -192,10 +198,6 @@ export default function VesselMap() {
                     <div className="flex items-center justify-between">
                       <span className="truncate">{vessel.type}</span>
                       <span>{vessel.speed.toFixed(1)} kts</span>
-                    </div>
-                    <div className="flex items-center text-gray-500">
-                      <Clock size={10} className="mr-1" />
-                      <span>{vessel.lastUpdate.toLocaleTimeString()}</span>
                     </div>
                   </div>
                 </div>
@@ -236,6 +238,10 @@ export default function VesselMap() {
                 <div className="flex justify-between">
                   <span className="text-gray-600">Location:</span>
                   <span className="font-medium text-xs">Madura Waters</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Last Update:</span>
+                  <span className="font-medium text-xs">{selectedVessel.lastUpdate.toLocaleTimeString()}</span>
                 </div>
               </div>
             </div>

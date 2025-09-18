@@ -56,6 +56,62 @@ export const mockVessels: Vessel[] = [
     rpmCenter: 810,
     fuelConsumption: 28.4,
     lastUpdate: new Date()
+  },
+  {
+    id: 'V005',
+    name: 'Bahari Utama',
+    type: 'Cargo',
+    status: 'Active',
+    position: { lat: -6.8, lng: 114.0 },
+    speed: 11.2,
+    heading: 180,
+    rpmPortside: 1750,
+    rpmStarboard: 1730,
+    rpmCenter: 1740,
+    fuelConsumption: 42.8,
+    lastUpdate: new Date()
+  },
+  {
+    id: 'V006',
+    name: 'Samudra Indah',
+    type: 'Tanker',
+    status: 'Active',
+    position: { lat: -7.2, lng: 113.2 },
+    speed: 9.8,
+    heading: 315,
+    rpmPortside: 1400,
+    rpmStarboard: 1380,
+    rpmCenter: 1390,
+    fuelConsumption: 35.5,
+    lastUpdate: new Date()
+  },
+  {
+    id: 'V007',
+    name: 'Pelita Laut',
+    type: 'Container',
+    status: 'Warning',
+    position: { lat: -6.6, lng: 113.5 },
+    speed: 13.7,
+    heading: 225,
+    rpmPortside: 1950,
+    rpmStarboard: 1920,
+    rpmCenter: 1935,
+    fuelConsumption: 48.3,
+    lastUpdate: new Date()
+  },
+  {
+    id: 'V008',
+    name: 'Jaya Makmur',
+    type: 'Ferry',
+    status: 'Active',
+    position: { lat: -7.1, lng: 114.1 },
+    speed: 16.4,
+    heading: 60,
+    rpmPortside: 1650,
+    rpmStarboard: 1670,
+    rpmCenter: 1660,
+    fuelConsumption: 31.2,
+    lastUpdate: new Date()
   }
 ];
 
