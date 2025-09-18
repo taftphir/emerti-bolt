@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Ship, Plus, Edit, Trash2, MapPin, X } from 'lucide-react';
+import { Ship, Plus, Edit, Trash2, MapPin, X, Wifi, WifiOff } from 'lucide-react';
 import { mockVessels } from '../../data/mockData';
 import { Vessel } from '../../types/vessel';
 
@@ -11,6 +11,12 @@ export default function VesselManagement() {
     name: '',
     type: 'Cargo',
     status: 'Active' as 'Active' | 'Inactive' | 'Warning' | 'Critical',
+    image: '',
+    owner: '',
+    vtsActive: true,
+    emsActive: true,
+    fmsActive: true,
+    vesselKey: '',
     lat: 0,
     lng: 0,
     speed: 0,
@@ -27,6 +33,12 @@ export default function VesselManagement() {
       name: '',
       type: 'Cargo',
       status: 'Active',
+      image: '',
+      owner: '',
+      vtsActive: true,
+      emsActive: true,
+      fmsActive: true,
+      vesselKey: '',
       lat: -7.0,
       lng: 113.8,
       speed: 0,
@@ -45,6 +57,12 @@ export default function VesselManagement() {
       name: vessel.name,
       type: vessel.type,
       status: vessel.status,
+      image: vessel.image || '',
+      owner: vessel.owner,
+      vtsActive: vessel.vtsActive,
+      emsActive: vessel.emsActive,
+      fmsActive: vessel.fmsActive,
+      vesselKey: vessel.vesselKey,
       lat: vessel.position.lat,
       lng: vessel.position.lng,
       speed: vessel.speed,
@@ -75,6 +93,12 @@ export default function VesselManagement() {
               name: formData.name,
               type: formData.type,
               status: formData.status,
+              image: formData.image,
+              owner: formData.owner,
+              vtsActive: formData.vtsActive,
+              emsActive: formData.emsActive,
+              fmsActive: formData.fmsActive,
+              vesselKey: formData.vesselKey,
               position: { lat: formData.lat, lng: formData.lng },
               speed: formData.speed,
               heading: formData.heading,
@@ -93,6 +117,12 @@ export default function VesselManagement() {
         name: formData.name,
         type: formData.type,
         status: formData.status,
+        image: formData.image,
+        owner: formData.owner,
+        vtsActive: formData.vtsActive,
+        emsActive: formData.emsActive,
+        fmsActive: formData.fmsActive,
+        vesselKey: formData.vesselKey,
         position: { lat: formData.lat, lng: formData.lng },
         speed: formData.speed,
         heading: formData.heading,
@@ -140,16 +170,16 @@ export default function VesselManagement() {
                   Vessel
                 </th>
                 <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden sm:table-cell">
-                  Type
+                  Owner
                 </th>
                 <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Status
                 </th>
                 <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden lg:table-cell">
-                  Position
+                  Sensors
                 </th>
                 <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden md:table-cell">
-                  Speed
+                  Vessel Key
                 </th>
                 <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Actions
@@ -161,34 +191,58 @@ export default function VesselManagement() {
                 <tr key={vessel.id} className="hover:bg-gray-50">
                   <td className="px-3 sm:px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">
-                      <div className="flex-shrink-0 h-8 w-8 sm:h-10 sm:w-10">
-                        <div className="h-8 w-8 sm:h-10 sm:w-10 rounded-full bg-blue-100 flex items-center justify-center">
-                          <Ship className="text-blue-600" size={16} />
-                        </div>
+                      <div className="flex-shrink-0 h-12 w-12 sm:h-16 sm:w-16">
+                        {vessel.image ? (
+                          <img 
+                            src={vessel.image} 
+                            alt={vessel.name}
+                            className="h-12 w-12 sm:h-16 sm:w-16 rounded-lg object-cover border border-gray-200"
+                          />
+                        ) : (
+                          <div className="h-12 w-12 sm:h-16 sm:w-16 rounded-lg bg-blue-100 flex items-center justify-center border border-gray-200">
+                            <Ship className="text-blue-600" size={20} />
+                          </div>
+                        )}
                       </div>
-                      <div className="ml-2 sm:ml-4">
+                      <div className="ml-3 sm:ml-4">
                         <div className="text-xs sm:text-sm font-medium text-gray-900">{vessel.name}</div>
-                        <div className="text-xs text-gray-500">{vessel.id}</div>
-                        <div className="text-xs text-gray-500 sm:hidden">{vessel.type}</div>
+                        <div className="text-xs text-gray-500">{vessel.id} • {vessel.type}</div>
+                        <div className="text-xs text-gray-500 sm:hidden">{vessel.owner}</div>
                       </div>
                     </div>
                   </td>
                   <td className="px-3 sm:px-6 py-4 whitespace-nowrap hidden sm:table-cell">
-                    <div className="text-xs sm:text-sm text-gray-900">{vessel.type}</div>
+                    <div className="text-xs sm:text-sm text-gray-900">{vessel.owner}</div>
                   </td>
                   <td className="px-3 sm:px-6 py-4 whitespace-nowrap">
                     <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(vessel.status)}`}>
                       {vessel.status}
                     </span>
                   </td>
-                  <td className="px-3 sm:px-6 py-4 whitespace-nowrap text-xs sm:text-sm text-gray-500 hidden lg:table-cell">
-                    <div className="flex items-center">
-                      <MapPin size={14} className="mr-1" />
-                      {vessel.position.lat.toFixed(3)}, {vessel.position.lng.toFixed(3)}
+                  <td className="px-3 sm:px-6 py-4 whitespace-nowrap hidden lg:table-cell">
+                    <div className="flex space-x-2">
+                      <div className={`flex items-center space-x-1 px-2 py-1 rounded-full text-xs ${
+                        vessel.vtsActive ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                      }`}>
+                        {vessel.vtsActive ? <Wifi size={12} /> : <WifiOff size={12} />}
+                        <span>VTS</span>
+                      </div>
+                      <div className={`flex items-center space-x-1 px-2 py-1 rounded-full text-xs ${
+                        vessel.emsActive ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                      }`}>
+                        {vessel.emsActive ? <Wifi size={12} /> : <WifiOff size={12} />}
+                        <span>EMS</span>
+                      </div>
+                      <div className={`flex items-center space-x-1 px-2 py-1 rounded-full text-xs ${
+                        vessel.fmsActive ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                      }`}>
+                        {vessel.fmsActive ? <Wifi size={12} /> : <WifiOff size={12} />}
+                        <span>FMS</span>
+                      </div>
                     </div>
                   </td>
-                  <td className="px-3 sm:px-6 py-4 whitespace-nowrap text-xs sm:text-sm text-gray-500 hidden md:table-cell">
-                    {vessel.speed.toFixed(1)} kts
+                  <td className="px-3 sm:px-6 py-4 whitespace-nowrap text-xs sm:text-sm text-gray-500 hidden md:table-cell font-mono">
+                    {vessel.vesselKey}
                   </td>
                   <td className="px-3 sm:px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <div className="flex space-x-1 sm:space-x-2">
@@ -218,7 +272,7 @@ export default function VesselManagement() {
       {/* Modal */}
       {showModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-screen overflow-y-auto">
+          <div className="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-screen overflow-y-auto">
             <div className="flex items-center justify-between p-6 border-b">
               <h3 className="text-lg font-semibold text-gray-800">
                 {editingVessel ? 'Edit Vessel' : 'Add New Vessel'}
@@ -231,159 +285,254 @@ export default function VesselManagement() {
               </button>
             </div>
             
-            <form onSubmit={handleSubmit} className="p-6 space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Vessel Name
-                  </label>
-                  <input
-                    type="text"
-                    value={formData.name}
-                    onChange={(e) => setFormData({...formData, name: e.target.value})}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    required
-                  />
+            <form onSubmit={handleSubmit} className="p-6 space-y-6">
+              {/* Basic Information */}
+              <div>
+                <h4 className="text-md font-semibold text-gray-800 mb-4">Basic Information</h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Vessel Name *
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.name}
+                      onChange={(e) => setFormData({...formData, name: e.target.value})}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      required
+                    />
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Type *
+                    </label>
+                    <select
+                      value={formData.type}
+                      onChange={(e) => setFormData({...formData, type: e.target.value})}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+                      <option value="Cargo">Cargo</option>
+                      <option value="Tanker">Tanker</option>
+                      <option value="Container">Container</option>
+                      <option value="Ferry">Ferry</option>
+                    </select>
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Status *
+                    </label>
+                    <select
+                      value={formData.status}
+                      onChange={(e) => setFormData({...formData, status: e.target.value as any})}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+                      <option value="Active">Active</option>
+                      <option value="Inactive">Inactive</option>
+                      <option value="Warning">Warning</option>
+                      <option value="Critical">Critical</option>
+                    </select>
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Owner *
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.owner}
+                      onChange={(e) => setFormData({...formData, owner: e.target.value})}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      required
+                    />
+                  </div>
+                  
+                  <div className="md:col-span-2">
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Vessel Image URL
+                    </label>
+                    <input
+                      type="url"
+                      value={formData.image}
+                      onChange={(e) => setFormData({...formData, image: e.target.value})}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      placeholder="https://example.com/vessel-image.jpg"
+                    />
+                  </div>
+                  
+                  <div className="md:col-span-2">
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Vessel Key *
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.vesselKey}
+                      onChange={(e) => setFormData({...formData, vesselKey: e.target.value})}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono"
+                      placeholder="e.g., SB001-2024-CARGO"
+                      required
+                    />
+                  </div>
                 </div>
-                
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Type
-                  </label>
-                  <select
-                    value={formData.type}
-                    onChange={(e) => setFormData({...formData, type: e.target.value})}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  >
-                    <option value="Cargo">Cargo</option>
-                    <option value="Tanker">Tanker</option>
-                    <option value="Container">Container</option>
-                    <option value="Ferry">Ferry</option>
-                  </select>
+              </div>
+
+              {/* Sensor Configuration */}
+              <div>
+                <h4 className="text-md font-semibold text-gray-800 mb-4">Sensor Configuration</h4>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="flex items-center space-x-3">
+                    <input
+                      type="checkbox"
+                      id="vtsActive"
+                      checked={formData.vtsActive}
+                      onChange={(e) => setFormData({...formData, vtsActive: e.target.checked})}
+                      className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                    />
+                    <label htmlFor="vtsActive" className="text-sm font-medium text-gray-700">
+                      VTS Active (GPS Sensor)
+                    </label>
+                  </div>
+                  
+                  <div className="flex items-center space-x-3">
+                    <input
+                      type="checkbox"
+                      id="emsActive"
+                      checked={formData.emsActive}
+                      onChange={(e) => setFormData({...formData, emsActive: e.target.checked})}
+                      className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                    />
+                    <label htmlFor="emsActive" className="text-sm font-medium text-gray-700">
+                      EMS Active (Engine Sensor)
+                    </label>
+                  </div>
+                  
+                  <div className="flex items-center space-x-3">
+                    <input
+                      type="checkbox"
+                      id="fmsActive"
+                      checked={formData.fmsActive}
+                      onChange={(e) => setFormData({...formData, fmsActive: e.target.checked})}
+                      className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                    />
+                    <label htmlFor="fmsActive" className="text-sm font-medium text-gray-700">
+                      FMS Active (Fuel Sensor)
+                    </label>
+                  </div>
                 </div>
-                
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Status
-                  </label>
-                  <select
-                    value={formData.status}
-                    onChange={(e) => setFormData({...formData, status: e.target.value as any})}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  >
-                    <option value="Active">Active</option>
-                    <option value="Inactive">Inactive</option>
-                    <option value="Warning">Warning</option>
-                    <option value="Critical">Critical</option>
-                  </select>
-                </div>
-                
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Speed (knots)
-                  </label>
-                  <input
-                    type="number"
-                    step="0.1"
-                    value={formData.speed}
-                    onChange={(e) => setFormData({...formData, speed: parseFloat(e.target.value) || 0})}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
-                
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Latitude
-                  </label>
-                  <input
-                    type="number"
-                    step="0.0001"
-                    value={formData.lat}
-                    onChange={(e) => setFormData({...formData, lat: parseFloat(e.target.value) || 0})}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    required
-                  />
-                </div>
-                
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Longitude
-                  </label>
-                  <input
-                    type="number"
-                    step="0.0001"
-                    value={formData.lng}
-                    onChange={(e) => setFormData({...formData, lng: parseFloat(e.target.value) || 0})}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    required
-                  />
-                </div>
-                
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Heading (degrees)
-                  </label>
-                  <input
-                    type="number"
-                    min="0"
-                    max="360"
-                    value={formData.heading}
-                    onChange={(e) => setFormData({...formData, heading: parseInt(e.target.value) || 0})}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
-                
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Fuel Consumption (L/h)
-                  </label>
-                  <input
-                    type="number"
-                    step="0.1"
-                    value={formData.fuelConsumption}
-                    onChange={(e) => setFormData({...formData, fuelConsumption: parseFloat(e.target.value) || 0})}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
-                
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    RPM Portside
-                  </label>
-                  <input
-                    type="number"
-                    value={formData.rpmPortside}
-                    onChange={(e) => setFormData({...formData, rpmPortside: parseInt(e.target.value) || 0})}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
-                
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    RPM Starboard
-                  </label>
-                  <input
-                    type="number"
-                    value={formData.rpmStarboard}
-                    onChange={(e) => setFormData({...formData, rpmStarboard: parseInt(e.target.value) || 0})}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
-                
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    RPM Center
-                  </label>
-                  <input
-                    type="number"
-                    value={formData.rpmCenter}
-                    onChange={(e) => setFormData({...formData, rpmCenter: parseInt(e.target.value) || 0})}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
+              </div>
+
+              {/* Position & Performance */}
+              <div>
+                <h4 className="text-md font-semibold text-gray-800 mb-4">Position & Performance</h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Latitude *
+                    </label>
+                    <input
+                      type="number"
+                      step="0.0001"
+                      value={formData.lat}
+                      onChange={(e) => setFormData({...formData, lat: parseFloat(e.target.value) || 0})}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      required
+                    />
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Longitude *
+                    </label>
+                    <input
+                      type="number"
+                      step="0.0001"
+                      value={formData.lng}
+                      onChange={(e) => setFormData({...formData, lng: parseFloat(e.target.value) || 0})}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      required
+                    />
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Speed (knots)
+                    </label>
+                    <input
+                      type="number"
+                      step="0.1"
+                      value={formData.speed}
+                      onChange={(e) => setFormData({...formData, speed: parseFloat(e.target.value) || 0})}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Heading (degrees)
+                    </label>
+                    <input
+                      type="number"
+                      min="0"
+                      max="360"
+                      value={formData.heading}
+                      onChange={(e) => setFormData({...formData, heading: parseInt(e.target.value) || 0})}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Fuel Consumption (L/h)
+                    </label>
+                    <input
+                      type="number"
+                      step="0.1"
+                      value={formData.fuelConsumption}
+                      onChange={(e) => setFormData({...formData, fuelConsumption: parseFloat(e.target.value) || 0})}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      RPM Portside
+                    </label>
+                    <input
+                      type="number"
+                      value={formData.rpmPortside}
+                      onChange={(e) => setFormData({...formData, rpmPortside: parseInt(e.target.value) || 0})}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      RPM Starboard
+                    </label>
+                    <input
+                      type="number"
+                      value={formData.rpmStarboard}
+                      onChange={(e) => setFormData({...formData, rpmStarboard: parseInt(e.target.value) || 0})}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      RPM Center
+                    </label>
+                    <input
+                      type="number"
+                      value={formData.rpmCenter}
+                      onChange={(e) => setFormData({...formData, rpmCenter: parseInt(e.target.value) || 0})}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
                 </div>
               </div>
               
-              <div className="flex space-x-3 pt-4">
+              <div className="flex space-x-3 pt-4 border-t">
                 <button
                   type="button"
                   onClick={() => setShowModal(false)}
@@ -395,7 +544,7 @@ export default function VesselManagement() {
                   type="submit"
                   className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
                 >
-                  {editingVessel ? 'Update' : 'Create'}
+                  {editingVessel ? 'Update Vessel' : 'Create Vessel'}
                 </button>
               </div>
             </form>

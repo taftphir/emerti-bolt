@@ -3,6 +3,12 @@ export interface Vessel {
   name: string;
   type: string;
   status: 'Active' | 'Inactive' | 'Warning' | 'Critical';
+  image?: string;
+  owner: string;
+  vtsActive: boolean;
+  emsActive: boolean;
+  fmsActive: boolean;
+  vesselKey: string;
   position: {
     lat: number;
     lng: number;
