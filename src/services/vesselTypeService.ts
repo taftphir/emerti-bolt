@@ -11,6 +11,16 @@ const DB_CONFIG = {
   table: import.meta.env.VITE_DB_TABLE || 'unit_type'
 };
 
+// Transform VesselType to UnitType
+const transformToUnitType = (vesselType: Partial<VesselType>): Omit<UnitType, 'id'> => ({
+  name: vesselType.name || '',
+  description: vesselType.description,
+  max_speed: vesselType.maxSpeed || 0,
+  fuel_capacity: vesselType.fuelCapacity || 0,
+  engine_count: vesselType.engineCount || 1,
+  color: vesselType.color
+});
+
 class VesselTypeService {
   // Get all vessel types from PostgreSQL
   async getAllVesselTypes(): Promise<ApiResponse<UnitType[]>> {
