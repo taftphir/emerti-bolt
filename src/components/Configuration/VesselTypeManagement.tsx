@@ -211,7 +211,7 @@ export default function VesselTypeManagement() {
       {/* Modal */}
       {showModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg shadow-xl max-w-md w-full">
+          <div className="bg-white rounded-lg shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between p-6 border-b">
               <h3 className="text-lg font-semibold text-gray-800">
                 {editingType ? 'Edit Vessel Type' : 'Add New Vessel Type'}
@@ -224,7 +224,7 @@ export default function VesselTypeManagement() {
               </button>
             </div>
             
-            <form onSubmit={handleSubmit} className="p-6 space-y-4">
+            <form onSubmit={handleSubmit} className="p-6 space-y-6">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Type Name
@@ -298,13 +298,13 @@ export default function VesselTypeManagement() {
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Color
                 </label>
-                <div className="grid grid-cols-4 gap-2">
+                <div className="grid grid-cols-4 gap-3">
                   {colorOptions.map((color) => (
                     <button
                       key={color.value}
                       type="button"
                       onClick={() => setFormData({...formData, color: color.value})}
-                      className={`w-full h-10 rounded-md border-2 ${
+                      className={`w-full h-12 rounded-lg border-2 transition-all hover:scale-105 ${
                         formData.color === color.value ? 'border-gray-800' : 'border-gray-300'
                       }`}
                       style={{ backgroundColor: color.value }}
@@ -314,17 +314,17 @@ export default function VesselTypeManagement() {
                 </div>
               </div>
               
-              <div className="flex space-x-3 pt-4">
+              <div className="flex space-x-3 pt-6 border-t border-gray-200">
                 <button
                   type="button"
                   onClick={() => setShowModal(false)}
-                  className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50"
+                  className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                  className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
                 >
                   {editingType ? 'Update' : 'Create'}
                 </button>
