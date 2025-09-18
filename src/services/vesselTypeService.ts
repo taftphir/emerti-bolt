@@ -3,11 +3,11 @@ import { UnitType, VesselTypeDB, ApiResponse } from '../types/database';
 
 // Database configuration from environment variables
 const DB_CONFIG = {
-  host: import.meta.env.VITE_DB_HOST,
+  host: import.meta.env.VITE_DB_HOST || '103.94.238.6',
   port: parseInt(import.meta.env.VITE_DB_PORT || '5432'),
-  user: import.meta.env.VITE_DB_USER,
-  password: import.meta.env.VITE_DB_PASSWORD,
-  database: import.meta.env.VITE_DB_NAME,
+  user: import.meta.env.VITE_DB_USER || 'odoo16',
+  password: import.meta.env.VITE_DB_PASSWORD || 'p3r3str01k4',
+  database: import.meta.env.VITE_DB_NAME || 'hcml_backup',
   table: import.meta.env.VITE_DB_TABLE || 'unit_type'
 };
 

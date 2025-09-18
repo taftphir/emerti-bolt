@@ -30,7 +30,16 @@ serve(async (req) => {
   }
 
   try {
-    const { action, config, id, data }: VesselTypeRequest = await req.json()
+    const requestBody = await req.json()
+    const { action, config, id, data }: VesselTypeRequest = requestBody
+
+    // Validate required fields
+    if (!action || !config) {
+      return new Response(
+        JSON.stringify({ error: 'Missing required fields: action and config' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      )
+    }
 
     // Create PostgreSQL client
     const client = new Client({
@@ -39,9 +48,26 @@ serve(async (req) => {
       hostname: config.host,
       port: config.port,
       password: config.password,
+      tls: {
+        enforce: false
+      }
     })
 
-    await client.connect()
+    try {
+      await client.connect()
+    } catch (connectError) {
+      console.error('Database connection failed:', connectError)
+      return new Response(
+        JSON.stringify({ 
+          error: 'Database connection failed',
+          details: connectError.message 
+        }),
+        { 
+          status: 500, 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+        }
+      )
+    }
 
     let result;
 
@@ -79,9 +105,9 @@ serve(async (req) => {
           [
             data.name,
             data.description,
-            data.maxSpeed,
-            data.fuelCapacity,
-            data.engineCount,
+            data.max_speed || data.maxSpeed,
+            data.fuel_capacity || data.fuelCapacity,
+            data.engine_count || data.engineCount,
             data.color
           ]
         )
@@ -113,9 +139,9 @@ serve(async (req) => {
           [
             data.name,
             data.description,
-            data.maxSpeed,
-            data.fuelCapacity,
-            data.engineCount,
+            data.max_speed || data.maxSpeed,
+            data.fuel_capacity || data.fuelCapacity,
+            data.engine_count || data.engineCount,
             data.color,
             id
           ]
