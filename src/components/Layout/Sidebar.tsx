@@ -109,7 +109,8 @@ export default function Sidebar({ activeSection, onSectionChange }: SidebarProps
                 title={isCollapsed ? item.label : ''}
               >
                 <item.icon size={20} />
-                {!isCollapsed && <span>{item.label}</span>}
+                {!isCollapsed && <span className="hidden lg:inline">{item.label}</span>}
+                <span className={`${isCollapsed ? 'hidden' : 'lg:hidden'}`}>{item.label}</span>
               </button>
             );
           }
@@ -138,7 +139,8 @@ export default function Sidebar({ activeSection, onSectionChange }: SidebarProps
                   title={isCollapsed ? item.label : ''}
                 >
                   <item.icon size={18} />
-                  {!isCollapsed && <span className="text-xs sm:text-sm">{item.label}</span>}
+                  {!isCollapsed && <span className="text-xs sm:text-sm hidden lg:inline">{item.label}</span>}
+                  <span className={`text-xs sm:text-sm ${isCollapsed ? 'hidden' : 'lg:hidden'}`}>{item.label}</span>
                 </button>
               ))}
           </div>
