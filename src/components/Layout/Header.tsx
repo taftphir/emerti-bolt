@@ -2,18 +2,69 @@ import React from 'react';
 import { LogOut, User, Bell } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 
-export default function Header() {
+interface HeaderProps {
+  activeSection: string;
+}
+
+export default function Header({ activeSection }: HeaderProps) {
   const { user, logout } = useAuth();
+
+  const getHeaderContent = () => {
+    switch (activeSection) {
+      case 'dashboard':
+        return {
+          title: 'Dashboard Overview',
+          subtitle: 'Real-time fleet monitoring and status'
+        };
+      case 'latest-data':
+        return {
+          title: 'Latest Sensor Data',
+          subtitle: 'Real-time vessel monitoring'
+        };
+      case 'map':
+        return {
+          title: 'Vessel Location Map',
+          subtitle: 'Real-time fleet positioning around Madura Island, Indonesia'
+        };
+      case 'daily-report':
+        return {
+          title: 'Daily Report',
+          subtitle: 'Performance analysis and trend visualization'
+        };
+      case 'users':
+        return {
+          title: 'User Management',
+          subtitle: 'Manage system users and access permissions'
+        };
+      case 'vessels':
+        return {
+          title: 'Vessel Management',
+          subtitle: 'Manage fleet vessels and configurations'
+        };
+      case 'vessel-types':
+        return {
+          title: 'Vessel Type Management',
+          subtitle: 'Configure vessel types and specifications'
+        };
+      default:
+        return {
+          title: 'Dashboard Overview',
+          subtitle: 'Real-time fleet monitoring and status'
+        };
+    }
+  };
+
+  const headerContent = getHeaderContent();
 
   return (
     <header className="bg-white border-b border-gray-200 px-4 sm:px-6 py-4">
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-800 ml-12 lg:ml-0">
-            Dashboard Overview
+            {headerContent.title}
           </h2>
           <p className="text-sm sm:text-base text-gray-600 ml-12 lg:ml-0 hidden sm:block">
-            Real-time fleet monitoring and status
+            {headerContent.subtitle}
           </p>
         </div>
         

@@ -42,11 +42,7 @@ export default function DailyReport() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h2 className="text-xl sm:text-2xl font-bold text-gray-800">Daily Report</h2>
-          <p className="text-sm sm:text-base text-gray-600">Performance analysis and trend visualization</p>
-        </div>
+      <div className="flex items-center justify-end mb-6">
         <button className="flex items-center space-x-1 sm:space-x-2 px-3 sm:px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm">
           <Download size={16} />
           <span className="hidden sm:inline">Export PDF</span>

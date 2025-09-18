@@ -48,13 +48,8 @@ export default function VesselMap() {
 
   return (
     <div>
-      <div className="mb-6">
-        <h2 className="text-xl sm:text-2xl font-bold text-gray-800">Vessel Location Map</h2>
-        <p className="text-sm sm:text-base text-gray-600">Real-time fleet positioning around Madura Island, Indonesia</p>
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 sm:gap-6">
-        <div className="lg:col-span-4">
+      <div className="grid grid-cols-1 gap-4 sm:gap-6">
+        <div>
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
             <div className="h-64 sm:h-80 lg:h-96 relative">
               {/* OpenStreetMap iframe */}
