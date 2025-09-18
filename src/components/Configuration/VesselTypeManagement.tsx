@@ -1,10 +1,6 @@
 import React, { useState } from 'react';
-import { useEffect } from 'react';
 import { Layers, Plus, Edit, Trash2, X } from 'lucide-react';
-import { vesselTypeService } from '../../services/vesselTypeService';
-import { UnitType } from '../../types/database';
 
-// Transform database type to component type
 interface VesselType {
   id: string;
   name: string;
@@ -14,6 +10,45 @@ interface VesselType {
   engineCount: number;
   color: string;
 }
+
+const mockVesselTypes: VesselType[] = [
+  {
+    id: '1',
+    name: 'Cargo',
+    description: 'General cargo vessels',
+    maxSpeed: 20,
+    fuelCapacity: 5000,
+    engineCount: 2,
+    color: '#3b82f6'
+  },
+  {
+    id: '2',
+    name: 'Tanker',
+    description: 'Oil and liquid cargo tankers',
+    maxSpeed: 15,
+    fuelCapacity: 8000,
+    engineCount: 2,
+    color: '#ef4444'
+  },
+  {
+    id: '3',
+    name: 'Container',
+    description: 'Container cargo ships',
+    maxSpeed: 25,
+    fuelCapacity: 6000,
+    engineCount: 3,
+    color: '#10b981'
+  },
+  {
+    id: '4',
+    name: 'Ferry',
+    description: 'Passenger and vehicle ferries',
+    maxSpeed: 18,
+    fuelCapacity: 3000,
+    engineCount: 2,
+    color: '#f59e0b'
+  }
+];
 
 const colorOptions = [
   { value: '#3b82f6', name: 'Blue' },
@@ -27,12 +62,9 @@ const colorOptions = [
 ];
 
 export default function VesselTypeManagement() {
-  const [vesselTypes, setVesselTypes] = useState<VesselType[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [vesselTypes, setVesselTypes] = useState<VesselType[]>(mockVesselTypes);
   const [showModal, setShowModal] = useState(false);
   const [editingType, setEditingType] = useState<VesselType | null>(null);
-  const [submitting, setSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     description: '',
@@ -41,53 +73,6 @@ export default function VesselTypeManagement() {
     engineCount: 1,
     color: '#3b82f6'
   });
-
-  // Transform UnitType to VesselType
-  const transformToVesselType = (unitType: UnitType): VesselType => ({
-    id: unitType.id.toString(),
-    name: unitType.name,
-    description: unitType.description || '',
-    maxSpeed: unitType.max_speed || 0,
-    fuelCapacity: unitType.fuel_capacity || 0,
-    engineCount: unitType.engine_count || 1,
-    color: unitType.color || '#3b82f6'
-  });
-
-  // Transform VesselType to UnitType
-  const transformToUnitType = (vesselType: Partial<VesselType>): Omit<UnitType, 'id'> => ({
-    name: vesselType.name || '',
-    description: vesselType.description,
-    max_speed: vesselType.maxSpeed,
-    fuel_capacity: vesselType.fuelCapacity,
-    engine_count: vesselType.engineCount,
-    color: vesselType.color
-  });
-
-  // Load vessel types from database
-  const loadVesselTypes = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      const response = await vesselTypeService.getAllVesselTypes();
-      
-      if (response.success && response.data) {
-        const transformedTypes = response.data.map(transformToVesselType);
-        setVesselTypes(transformedTypes);
-      } else {
-        setError(response.error || 'Failed to load vessel types');
-      }
-    } catch (err) {
-      setError('Network error occurred');
-      console.error('Error loading vessel types:', err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Load data on component mount
-  useEffect(() => {
-    loadVesselTypes();
-  }, []);
 
   const handleAdd = () => {
     setEditingType(null);
@@ -115,106 +100,52 @@ export default function VesselTypeManagement() {
     setShowModal(true);
   };
 
-  const handleDelete = async (typeId: string) => {
-    if (!window.confirm('Are you sure you want to delete this vessel type?')) {
-      return;
-    }
-
-    try {
-      const response = await vesselTypeService.deleteVesselType(parseInt(typeId));
-      
-      if (response.success) {
-        setVesselTypes(vesselTypes.filter(type => type.id !== typeId));
-      } else {
-        alert(response.error || 'Failed to delete vessel type');
-      }
-    } catch (err) {
-      alert('Network error occurred');
-      console.error('Error deleting vessel type:', err);
+  const handleDelete = (typeId: string) => {
+    if (window.confirm('Are you sure you want to delete this vessel type?')) {
+      setVesselTypes(vesselTypes.filter(type => type.id !== typeId));
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    setSubmitting(true);
-    
-    try {
     if (editingType) {
-        // Update existing type
-        const response = await vesselTypeService.updateVesselType(
-          parseInt(editingType.id),
-          transformToUnitType(formData)
-        );
-        
-        if (response.success && response.data) {
-          const updatedType = transformToVesselType(response.data);
-          setVesselTypes(vesselTypes.map(type => 
-            type.id === editingType.id ? updatedType : type
-          ));
-        } else {
-          alert(response.error || 'Failed to update vessel type');
-          return;
-        }
+      // Update existing type
+      setVesselTypes(vesselTypes.map(type => 
+        type.id === editingType.id 
+          ? { 
+              ...type,
+              name: formData.name,
+              description: formData.description,
+              maxSpeed: formData.maxSpeed,
+              fuelCapacity: formData.fuelCapacity,
+              engineCount: formData.engineCount,
+              color: formData.color
+            }
+          : type
+      ));
     } else {
-        // Add new type
-        const response = await vesselTypeService.createVesselType(
-          transformToUnitType(formData)
-        );
-        
-        if (response.success && response.data) {
-          const newType = transformToVesselType(response.data);
-          setVesselTypes([...vesselTypes, newType]);
-        } else {
-          alert(response.error || 'Failed to create vessel type');
-          return;
-        }
+      // Add new type
+      const newType: VesselType = {
+        id: Date.now().toString(),
+        name: formData.name,
+        description: formData.description,
+        maxSpeed: formData.maxSpeed,
+        fuelCapacity: formData.fuelCapacity,
+        engineCount: formData.engineCount,
+        color: formData.color
+      };
+      setVesselTypes([...vesselTypes, newType]);
     }
     
     setShowModal(false);
-    } catch (err) {
-      alert('Network error occurred');
-      console.error('Error submitting vessel type:', err);
-    } finally {
-      setSubmitting(false);
-    }
   };
 
   return (
     <div>
-      {/* Loading State */}
-      {loading && (
-        <div className="flex items-center justify-center py-12">
-          <div className="animate-spin w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full"></div>
-          <span className="ml-3 text-gray-600">Loading vessel types...</span>
-        </div>
-      )}
-
-      {/* Error State */}
-      {error && (
-        <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center">
-              <div className="text-red-600 mr-3">⚠️</div>
-              <div>
-                <h3 className="text-red-800 font-medium">Database Connection Error</h3>
-                <p className="text-red-600 text-sm mt-1">{error}</p>
-              </div>
-            </div>
-            <button
-              onClick={loadVesselTypes}
-              className="px-3 py-1 bg-red-600 text-white rounded text-sm hover:bg-red-700"
-            >
-              Retry
-            </button>
-          </div>
-        </div>
-      )}
-
       <div className="flex items-center justify-end mb-6">
         <button 
           onClick={handleAdd}
-          disabled={loading}
           className="flex items-center space-x-1 sm:space-x-2 px-3 sm:px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm"
         >
           <Plus size={16} />
@@ -223,8 +154,7 @@ export default function VesselTypeManagement() {
         </button>
       </div>
 
-      {!loading && !error && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
         {vesselTypes.map((type) => (
           <div key={type.id} className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
             <div 
@@ -277,7 +207,6 @@ export default function VesselTypeManagement() {
           </div>
         ))}
       </div>
-      )}
 
       {/* Modal */}
       {showModal && (
@@ -389,17 +318,15 @@ export default function VesselTypeManagement() {
                 <button
                   type="button"
                   onClick={() => setShowModal(false)}
-                  disabled={submitting}
                   className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  disabled={submitting}
                   className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
                 >
-                  {submitting ? 'Saving...' : (editingType ? 'Update' : 'Create')}
+                  {editingType ? 'Update' : 'Create'}
                 </button>
               </div>
             </form>
