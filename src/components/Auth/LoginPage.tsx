@@ -102,7 +102,7 @@ export default function LoginPage() {
               rel="noopener noreferrer"
               className="text-blue-600 text-sm font-semibold hover:underline transition-colors"
             >
-              alugara.id
+              Alugara Inovasi Utama
             </a>
           </div>
         </div>
