@@ -113,7 +113,7 @@ export default function VesselMap() {
                               </div>
                               <div className="flex justify-between">
                                 <span>Heading:</span>
-                                <span>{vessel.heading}°</span>
+                                <span>{vessel.heading.toFixed(0)}°</span>
                               </div>
                               <div className="flex justify-between">
                                 <span>Position:</span>
