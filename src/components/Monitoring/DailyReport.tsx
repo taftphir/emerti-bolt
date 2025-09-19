@@ -206,7 +206,7 @@ export default function DailyReport() {
             </div>
           </div>
 
-          <div className="flex items-center">
+          <div className="flex items-end">
             <button className="w-full px-3 sm:px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 flex items-center justify-center space-x-1 sm:space-x-2 text-sm">
               <BarChart3 size={16} />
               <span className="hidden sm:inline">Generate Report</span>
@@ -214,20 +214,20 @@ export default function DailyReport() {
             </button>
           </div>
           
-          <div className="flex items-center">
+          {/* <div className="flex items-end">
             <button className="w-full px-3 sm:px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center justify-center space-x-1 sm:space-x-2 text-sm">
               <Download size={16} />
               <span className="hidden sm:inline">Export PDF</span>
               <span className="sm:hidden">Export</span>
             </button>
-          </div>
+          </div> */}
         </div>
 
-        {/* <button className="flex items-center space-x-1 sm:space-x-2 px-3 sm:px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm">
+        <button className="flex items-center space-x-1 sm:space-x-2 px-3 sm:px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm">
           <Download size={16} />
           <span className="hidden sm:inline">Export PDF</span>
           <span className="sm:hidden">Export</span>
-        </button> */}
+        </button>
       </div>
 
       {/* Summary Stats */}
