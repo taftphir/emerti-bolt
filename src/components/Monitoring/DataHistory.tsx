@@ -459,14 +459,14 @@ export default function DataHistory() {
                       <td className="px-3 sm:px-6 py-4 whitespace-nowrap hidden lg:table-cell">
                         <div className="flex items-center text-xs sm:text-sm text-gray-900">
                           <Navigation size={14} className="mr-1 text-green-500" />
-                          {record.heading}°
+                          {record.heading.toFixed(2)}°
                         </div>
                       </td>
                       <td className="px-3 sm:px-6 py-4 whitespace-nowrap hidden lg:table-cell">
                         <div className="text-xs space-y-1">
-                          <div>P: {record.rpmPortside}</div>
-                          <div>S: {record.rpmStarboard}</div>
-                          <div>C: {record.rpmCenter}</div>
+                          <div>P: {record.rpmPortside.toFixed(2)}</div>
+                          <div>S: {record.rpmStarboard.toFixed(2)}</div>
+                          <div>C: {record.rpmCenter.toFixed(2)}</div>
                         </div>
                       </td>
                     </tr>
