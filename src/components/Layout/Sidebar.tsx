@@ -28,6 +28,7 @@ const menuItems = [
   { id: 'users', label: 'User Management', icon: Users, parent: 'configuration' },
   { id: 'vessels', label: 'Vessel Management', icon: Ship, parent: 'configuration' },
   { id: 'vessel-types', label: 'Vessel Types', icon: Layers, parent: 'configuration' },
+  { id: 'settings', label: 'Settings', icon: Settings, parent: 'configuration' },
 ];
 
 const sections = {
@@ -82,16 +83,16 @@ export default function Sidebar({ activeSection, onSectionChange }: SidebarProps
           <MenuIcon size={20} />
         </button>
         
-      <div className={`mb-8 ${isCollapsed ? 'lg:text-center' : ''}`}>
+      <div className={`mb-8 ${isCollapsed ? 'lg:text-center' : ''} flex items-center space-x-3`}>
+        <img 
+          src="/emerti-logo.png" 
+          alt="E-Merti Logo" 
+          className={`${isCollapsed ? 'w-8 h-8 lg:mx-auto' : 'w-10 h-10'} object-contain`}
+        />
         {!isCollapsed && (
-          <>
-          <h1 className="text-xl sm:text-2xl font-bold text-orange-400">E-Merti</h1>
-          <p className="text-blue-300 text-xs sm:text-sm">Vessel Monitoring</p>
-          </>
-        )}
-        {isCollapsed && (
-          <div className="hidden lg:block">
-            <h1 className="text-lg font-bold text-orange-400">E</h1>
+          <div>
+            <h1 className="text-xl sm:text-2xl font-bold text-orange-400">E-Merti</h1>
+            <p className="text-blue-300 text-xs sm:text-sm">Vessel Monitoring</p>
           </div>
         )}
       </div>
@@ -112,10 +113,7 @@ export default function Sidebar({ activeSection, onSectionChange }: SidebarProps
               >
                 <item.icon size={20} />
                 {!isCollapsed && (
-                  <>
-                    <span className="hidden lg:inline">{item.label}</span>
-                    <span className="lg:hidden">{item.label}</span>
-                  </>
+                  <span>{item.label}</span>
                 )}
               </button>
             );
@@ -125,16 +123,11 @@ export default function Sidebar({ activeSection, onSectionChange }: SidebarProps
 
         {Object.entries(sections).map(([sectionId, sectionLabel]) => (
           <div key={sectionId} className="mt-6">
-            <div className="lg:block">
-              {!isCollapsed ? (
-                <h3 className="text-blue-300 text-xs sm:text-sm font-semibold mb-2 px-4">{sectionLabel}</h3>
-              ) : (
-                <div className="border-t border-blue-700 mx-2 mb-2"></div>
-              )}
-            </div>
-            <div className="lg:hidden">
+            {!isCollapsed ? (
               <h3 className="text-blue-300 text-xs sm:text-sm font-semibold mb-2 px-4">{sectionLabel}</h3>
-            </div>
+            ) : (
+              <div className="border-t border-blue-700 mx-2 mb-2 hidden lg:block"></div>
+            )}
             {menuItems
               .filter(item => item.parent === sectionId)
               .map(item => (
@@ -150,15 +143,41 @@ export default function Sidebar({ activeSection, onSectionChange }: SidebarProps
                 >
                   <item.icon size={18} />
                   {!isCollapsed && (
-                    <>
-                      <span className="text-xs sm:text-sm hidden lg:inline">{item.label}</span>
-                      <span className="text-xs sm:text-sm lg:hidden">{item.label}</span>
-                    </>
+                    <span className="text-xs sm:text-sm">{item.label}</span>
                   )}
                 </button>
               ))}
           </div>
         ))}
+        
+        {/* Powered by alugara.id */}
+        <div className="mt-8 pt-4 border-t border-blue-700">
+          {!isCollapsed ? (
+            <div className="text-center">
+              <p className="text-blue-300 text-xs">Powered by</p>
+              <a 
+                href="https://alugara.id" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-orange-400 text-sm font-semibold hover:text-orange-300 transition-colors"
+              >
+                alugara.id
+              </a>
+            </div>
+          ) : (
+            <div className="hidden lg:block text-center">
+              <a 
+                href="https://alugara.id" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-orange-400 text-xs font-bold hover:text-orange-300 transition-colors"
+                title="Powered by alugara.id"
+              >
+                A
+              </a>
+            </div>
+          )}
+        </div>
       </nav>
       </div>
     </>

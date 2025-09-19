@@ -33,10 +33,25 @@ export default function LoginPage() {
         <div className="bg-white rounded-2xl shadow-2xl p-8">
           <div className="text-center mb-8">
             <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-600 rounded-full mb-4">
-              <Ship className="text-white" size={32} />
+              <img 
+                src="/emerti-logo.png" 
+                alt="E-Merti Logo" 
+                className="w-12 h-12 object-contain"
+              />
             </div>
             <h1 className="text-3xl font-bold text-gray-800">E-Merti</h1>
             <p className="text-gray-600 mt-2">Vessel Monitoring System</p>
+            <div className="mt-4 text-center">
+              <p className="text-gray-500 text-sm">Powered by</p>
+              <a 
+                href="https://alugara.id" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-blue-600 text-sm font-semibold hover:text-blue-800 transition-colors"
+              >
+                alugara.id
+              </a>
+            </div>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
