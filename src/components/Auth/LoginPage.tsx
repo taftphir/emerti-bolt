@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Ship, Eye, EyeOff } from 'lucide-react';
+import { Eye, EyeOff } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useSystemConfig } from '../../contexts/SystemConfigContext';
 
@@ -20,7 +20,7 @@ export default function LoginPage() {
     try {
       const success = login(username, password);
       if (!success) {
-        setError('Invalid credentials. Use alugara/alugara');
+        setError('Invalid username or password');
       }
     } catch (err) {
       setError('Login failed. Please try again.');
@@ -34,16 +34,11 @@ export default function LoginPage() {
       <div className="w-full max-w-md">
         <div className="bg-white rounded-2xl shadow-2xl p-8">
           <div className="text-center mb-8">
-            <div>
-              <img 
-                src={config.companyLogo} 
-                alt="Company Logo" 
-                className="w-32 h-32 object-contain mx-auto mb-4"
-              />
-              <img 
-                className="w-48 h-48 object-contain mx-auto mb-4"
-              />
-            </div>
+            <img 
+              src={config.companyLogo} 
+              alt="Company Logo" 
+              className="w-32 h-32 object-contain mx-auto mb-6"
+            />
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
@@ -97,20 +92,19 @@ export default function LoginPage() {
             >
               {loading ? 'Signing in...' : 'Sign In'}
             </button>
-            
-            <div className="mt-6 text-center">
-              <p className="text-gray-500 text-sm">Powered by</p>
-              <a 
-                href="https://alugara.id" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-sm font-semibold hover:underline transition-colors"
-                style={{ color: config.themeColor }}
-              >
-                alugara.id
-              </a>
-            </div>
           </form>
+          
+          <div className="mt-8 text-center">
+            <p className="text-gray-500 text-sm">Powered by</p>
+            <a 
+              href="https://alugara.id" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-blue-600 text-sm font-semibold hover:underline transition-colors"
+            >
+              alugara.id
+            </a>
+          </div>
         </div>
       </div>
     </div>
