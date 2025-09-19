@@ -46,7 +46,7 @@ export default function AnalogGauge({
     if (isRPMGauge) {
       return '/background_RPM .png';
     } else if (isHeadingGauge) {
-      return '/background_heading.png';
+      return '/background_heading copy.png';
     }
     // Default to RPM background for other gauges
     return '/background_RPM .png';
