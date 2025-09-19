@@ -79,30 +79,31 @@ export default function Sidebar({ activeSection, onSectionChange }: SidebarProps
       `}
       style={{ backgroundColor: config.themeColor }}
       >
-        {/* Desktop hamburger button */}
-        <button
-          onClick={toggleCollapse}
-          className="hidden lg:block absolute top-4 right-4 text-white p-1 rounded transition-colors"
-        >
-          <MenuIcon size={20} />
-        </button>
-        
-        <div className={`mb-8 lg:text-center ${isCollapsed ? 'hidden' : 'flex'} items-center space-x-3`}>
-          <img 
-            src="/fms.png" 
-            alt="Application Logo" 
-            className="w-36 h-20 object-contain"
-          />
+        <div className={`flex items-center justify-between mb-6 ${isCollapsed ? 'flex-col' : ''}`}>
+          <div className={`${isCollapsed ? 'hidden' : 'flex'} items-center space-x-3`}>
+            <img 
+              src="/fms.png" 
+              alt="Application Logo" 
+              className="w-36 h-20 object-contain"
+            />
+          </div>
+          
+          <button
+            onClick={toggleCollapse}
+            className="hidden lg:block text-white p-2 rounded transition-colors hover:bg-white hover:bg-opacity-20"
+          >
+            <MenuIcon size={20} />
+          </button>
         </div>
-      
-      <nav>
+        
+        <nav className={isCollapsed ? 'mt-4' : ''}>
         {menuItems.map((item) => {
           if (!item.parent) {
             return (
               <button
                 key={item.id}
                 onClick={() => handleSectionChange(item.id)}
-                className={`w-full flex items-center ${isCollapsed ? 'lg:justify-center' : 'space-x-3'} px-4 py-3 rounded-lg mb-2 text-left transition-colors ${
+                className={`w-full flex items-center ${isCollapsed ? 'lg:justify-center lg:px-2' : 'space-x-3 px-4'} py-3 rounded-lg mb-2 text-left transition-colors ${
                   activeSection === item.id 
                     ? 'bg-orange-600 text-white' 
                     : 'text-blue-200'
@@ -135,7 +136,7 @@ export default function Sidebar({ activeSection, onSectionChange }: SidebarProps
                 <button
                   key={item.id}
                   onClick={() => handleSectionChange(item.id)}
-                  className={`w-full flex items-center ${isCollapsed ? 'lg:justify-center lg:px-4' : 'space-x-3 px-6'} py-2 rounded-lg mb-1 text-left transition-colors ${
+                  className={`w-full flex items-center ${isCollapsed ? 'lg:justify-center lg:px-2' : 'space-x-3 px-6'} py-2 rounded-lg mb-1 text-left transition-colors ${
                     activeSection === item.id 
                       ? 'bg-orange-600 text-white' 
                       : 'text-blue-200'
