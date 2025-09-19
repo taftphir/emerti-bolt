@@ -1,17 +1,6 @@
 import React, { useState } from 'react';
 import { Settings, Building, Palette, Upload, X, Eye } from 'lucide-react';
-
-interface SystemConfig {
-  companyName: string;
-  companyLogo: string;
-  themeColor: string;
-}
-
-const defaultConfig: SystemConfig = {
-  companyName: 'E-Merti Fleet Management',
-  companyLogo: 'https://images.pexels.com/photos/163236/luxury-yacht-boat-speed-water-163236.jpeg?auto=compress&cs=tinysrgb&w=400',
-  themeColor: '#1e40af'
-};
+import { useSystemConfig } from '../../contexts/SystemConfigContext';
 
 const themeColors = [
   { name: 'Blue', value: '#1e40af', bg: 'bg-blue-700' },
@@ -25,11 +14,10 @@ const themeColors = [
 ];
 
 export default function SystemSettings() {
-  const [config, setConfig] = useState<SystemConfig>(defaultConfig);
+  const { config, updateConfig, resetConfig } = useSystemConfig();
   const [showPreview, setShowPreview] = useState(false);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string>('');
-  const [isSaving, setIsSaving] = useState(false);
   const [saveMessage, setSaveMessage] = useState<string>('');
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,7 +28,7 @@ export default function SystemSettings() {
       reader.onload = (e) => {
         const result = e.target?.result as string;
         setImagePreview(result);
-        setConfig(prev => ({ ...prev, companyLogo: result }));
+        updateConfig({ companyLogo: result });
       };
       reader.readAsDataURL(file);
     }
@@ -49,20 +37,13 @@ export default function SystemSettings() {
   const handleImageDelete = () => {
     setImageFile(null);
     setImagePreview('');
-    setConfig(prev => ({ ...prev, companyLogo: defaultConfig.companyLogo }));
+    updateConfig({ companyLogo: 'https://images.pexels.com/photos/163236/luxury-yacht-boat-speed-water-163236.jpeg?auto=compress&cs=tinysrgb&w=400' });
   };
 
   const handleSave = async () => {
-    setIsSaving(true);
     setSaveMessage('');
     
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    // In real app, save to backend/localStorage
-    localStorage.setItem('systemConfig', JSON.stringify(config));
-    
-    setIsSaving(false);
+    // Config is already saved via updateConfig, just show message
     setSaveMessage('Settings saved successfully!');
     
     // Clear message after 3 seconds
@@ -71,7 +52,7 @@ export default function SystemSettings() {
 
   const handleReset = () => {
     if (window.confirm('Are you sure you want to reset to default settings?')) {
-      setConfig(defaultConfig);
+      resetConfig();
       setImageFile(null);
       setImagePreview('');
       setSaveMessage('Settings reset to default');
@@ -108,11 +89,10 @@ export default function SystemSettings() {
           </button>
           <button
             onClick={handleSave}
-            disabled={isSaving}
-            className="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-blue-400 text-sm"
+            className="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm"
           >
             <Settings size={16} />
-            <span>{isSaving ? 'Saving...' : 'Save Changes'}</span>
+            <span>Save Changes</span>
           </button>
         </div>
       </div>
@@ -135,7 +115,7 @@ export default function SystemSettings() {
                 <input
                   type="text"
                   value={config.companyName}
-                  onChange={(e) => setConfig(prev => ({ ...prev, companyName: e.target.value }))}
+                  onChange={(e) => updateConfig({ companyName: e.target.value })}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Enter company name"
                 />
@@ -189,7 +169,7 @@ export default function SystemSettings() {
                       type="url"
                       value={config.companyLogo.startsWith('data:') ? '' : config.companyLogo}
                       onChange={(e) => {
-                        setConfig(prev => ({ ...prev, companyLogo: e.target.value }));
+                        updateConfig({ companyLogo: e.target.value });
                         if (e.target.value && !imageFile) {
                           setImagePreview('');
                         }
@@ -223,6 +203,7 @@ export default function SystemSettings() {
                     key={color.value}
                     type="button"
                     onClick={() => setConfig(prev => ({ ...prev, themeColor: color.value }))}
+                    onClick={() => updateConfig({ themeColor: color.value })}
                     className={`relative w-full h-12 rounded-lg border-2 transition-all hover:scale-105 ${
                       config.themeColor === color.value ? 'border-gray-800 ring-2 ring-gray-300' : 'border-gray-300'
                     } ${color.bg}`}
@@ -247,12 +228,14 @@ export default function SystemSettings() {
                     type="color"
                     value={config.themeColor}
                     onChange={(e) => setConfig(prev => ({ ...prev, themeColor: e.target.value }))}
+                    onChange={(e) => updateConfig({ themeColor: e.target.value })}
                     className="w-12 h-10 border border-gray-300 rounded cursor-pointer"
                   />
                   <input
                     type="text"
                     value={config.themeColor}
                     onChange={(e) => setConfig(prev => ({ ...prev, themeColor: e.target.value }))}
+                    onChange={(e) => updateConfig({ themeColor: e.target.value })}
                     className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono text-sm"
                     placeholder="#1e40af"
                     pattern="^#[0-9A-Fa-f]{6}$"
@@ -285,7 +268,8 @@ export default function SystemSettings() {
                       />
                     </div>
                     <h1 className="text-lg font-bold text-gray-800">E-Merti</h1>
-                    <p className="text-gray-600 text-sm">{config.companyName}</p>
+                    <h1 className="text-lg font-bold text-gray-800">{config.companyName}</h1>
+                    <p className="text-gray-600 text-sm">Vessel Monitoring System</p>
                     <div className="mt-2 text-center">
                       <p className="text-gray-500 text-xs">Powered by</p>
                       <span className="text-blue-600 text-xs font-semibold">alugara.id</span>
@@ -311,7 +295,7 @@ export default function SystemSettings() {
                     />
                     <div>
                       <h1 className="text-lg font-bold text-orange-400">E-Merti</h1>
-                      <p className="text-blue-300 text-xs">Vessel Monitoring</p>
+                      <p className="text-blue-300 text-xs">{config.companyName}</p>
                     </div>
                   </div>
                   

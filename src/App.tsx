@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { SystemConfigProvider } from './contexts/SystemConfigContext';
 import LoginPage from './components/Auth/LoginPage';
 import Sidebar from './components/Layout/Sidebar';
 import Header from './components/Layout/Header';
@@ -64,9 +65,11 @@ function MainApp() {
 
 function App() {
   return (
-    <AuthProvider>
-      <MainApp />
-    </AuthProvider>
+    <SystemConfigProvider>
+      <AuthProvider>
+        <MainApp />
+      </AuthProvider>
+    </SystemConfigProvider>
   );
 }
 

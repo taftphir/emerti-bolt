@@ -13,6 +13,7 @@ import {
   X,
   Menu as MenuIcon
 } from 'lucide-react';
+import { useSystemConfig } from '../../contexts/SystemConfigContext';
 
 interface SidebarProps {
   activeSection: string;
@@ -39,6 +40,7 @@ const sections = {
 export default function Sidebar({ activeSection, onSectionChange }: SidebarProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
   const [isCollapsed, setIsCollapsed] = React.useState(false);
+  const { config } = useSystemConfig();
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -71,25 +73,36 @@ export default function Sidebar({ activeSection, onSectionChange }: SidebarProps
 
       {/* Sidebar */}
       <div className={`
-        bg-blue-900 text-white min-h-screen p-4 transition-transform duration-300 ease-in-out z-40
+        text-white min-h-screen p-4 transition-transform duration-300 ease-in-out z-40
         lg:relative lg:translate-x-0 ${isCollapsed ? 'lg:w-16' : 'lg:w-64'}
         fixed w-64 ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}
-      `}>
+      `}
+      style={{ backgroundColor: config.themeColor }}
+      >
         {/* Desktop hamburger button */}
         <button
           onClick={toggleCollapse}
-          className="hidden lg:block absolute top-4 right-4 text-white hover:bg-blue-800 p-1 rounded"
+          className="hidden lg:block absolute top-4 right-4 text-white p-1 rounded transition-colors"
+          style={{ 
+            ':hover': { backgroundColor: `${config.themeColor}dd` }
+          }}
         >
           <MenuIcon size={20} />
         </button>
         
-      <div className={`mb-8 ${isCollapsed ? 'lg:text-center' : ''} flex items-center space-x-3`}>
-        <img 
-          src="https://images.pexels.com/photos/163236/luxury-yacht-boat-speed-water-163236.jpeg?auto=compress&cs=tinysrgb&w=400" 
-          alt="E-Merti Logo" 
-          className={`${isCollapsed ? 'w-8 h-8 lg:mx-auto' : 'w-10 h-10'} object-contain`}
-        />
-      </div>
+        <div className={`mb-8 ${isCollapsed ? 'lg:text-center' : ''} flex items-center space-x-3`}>
+          <img 
+            src={config.companyLogo} 
+            alt="Company Logo" 
+            className={`${isCollapsed ? 'w-8 h-8 lg:mx-auto' : 'w-10 h-10'} object-contain rounded`}
+          />
+          {!isCollapsed && (
+            <div>
+              <h1 className="text-lg font-bold text-orange-400">E-Merti</h1>
+              <p className="text-blue-300 text-xs">{config.companyName}</p>
+            </div>
+          )}
+        </div>
       
       <nav>
         {menuItems.map((item) => {
@@ -101,8 +114,11 @@ export default function Sidebar({ activeSection, onSectionChange }: SidebarProps
                 className={`w-full flex items-center ${isCollapsed ? 'lg:justify-center' : 'space-x-3'} px-4 py-3 rounded-lg mb-2 text-left transition-colors ${
                   activeSection === item.id 
                     ? 'bg-orange-600 text-white' 
-                    : 'text-blue-200 hover:bg-blue-800'
+                    : 'text-blue-200'
                 }`}
+                style={activeSection !== item.id ? {
+                  ':hover': { backgroundColor: `${config.themeColor}dd` }
+                } : {}}
                 title={isCollapsed ? item.label : ''}
               >
                 <item.icon size={20} />
@@ -131,7 +147,7 @@ export default function Sidebar({ activeSection, onSectionChange }: SidebarProps
                   className={`w-full flex items-center ${isCollapsed ? 'lg:justify-center lg:px-4' : 'space-x-3 px-6'} py-2 rounded-lg mb-1 text-left transition-colors ${
                     activeSection === item.id 
                       ? 'bg-orange-600 text-white' 
-                      : 'text-blue-200 hover:bg-blue-800'
+                      : 'text-blue-200'
                   }`}
                   title={isCollapsed ? item.label : ''}
                 >
@@ -145,7 +161,7 @@ export default function Sidebar({ activeSection, onSectionChange }: SidebarProps
         ))}
         
         {/* Powered by alugara.id */}
-        <div className="mt-8 pt-4 border-t border-blue-700">
+        <div className="mt-8 pt-4 border-t" style={{ borderColor: `${config.themeColor}aa` }}>
           {!isCollapsed ? (
             <div className="text-center">
               <p className="text-blue-300 text-xs">Powered by</p>
