@@ -37,7 +37,7 @@ export default function LoginPage() {
             <img 
               src={config.companyLogo} 
               alt="Company Logo" 
-              className="w-42 h-38 object-contain mx-auto mb-6" 
+              className="w-38 h-35 object-contain mx-auto mb-6" 
             />
           </div>
 
