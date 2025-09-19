@@ -109,26 +109,22 @@ export default function LatestData() {
       </div>
 
       <div className="space-y-8">
-        {/* Priority: Power Source & Alarm */}
+        {/* Power Source & System Status - Compact */}
         <div>
           <h3 className="text-lg font-semibold text-gray-800 mb-4">Power Source & System Status</h3>
-          <div className="flex justify-center">
-            <div className="w-full max-w-sm">
-              <PowerSourceIndicator
-                acPower={true}
-                dcPower={true}
-                backupBattery={true}
-                alarm={selectedVessel.status === 'Warning' || selectedVessel.status === 'Critical'}
-                blackout={selectedVessel.status === 'Critical'}
-              />
-            </div>
-          </div>
+          <PowerSourceIndicator
+            acPower={true}
+            dcPower={true}
+            backupBattery={true}
+            alarm={selectedVessel.status === 'Warning' || selectedVessel.status === 'Critical'}
+            blackout={selectedVessel.status === 'Critical'}
+          />
         </div>
 
-        {/* Navigation & Speed */}
+        {/* Navigation, Speed & Fuel */}
         <div>
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">Navigation & Speed</h3>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+          <h3 className="text-lg font-semibold text-gray-800 mb-4">Navigation, Speed & Fuel</h3>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
             <div className="flex justify-center">
               <div className="w-full max-w-sm">
                 <AnalogGauge
@@ -155,7 +151,22 @@ export default function LatestData() {
                 />
               </div>
             </div>
+            
+            <div className="flex justify-center">
+              <div className="w-full max-w-sm">
+                <AnalogGauge
+                  value={selectedVessel.fuelConsumption}
+                  min={0}
+                  max={100}
+                  unit="L/h"
+                  label="Fuel Consumption"
+                  color="red"
+                />
+              </div>
+            </div>
           </div>
+        </div>
+
         {/* Engine Performance */}
         <div>
           <h3 className="text-lg font-semibold text-gray-800 mb-4">Engine Performance</h3>
@@ -200,23 +211,6 @@ export default function LatestData() {
                   warningThreshold={500}
                 />
               </div>
-            </div>
-          </div>
-        </div>
-        </div>
-        {/* Fuel Consumption */}
-        <div>
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">Fuel Consumption</h3>
-          <div className="flex justify-center">
-            <div className="w-full max-w-sm">
-              <AnalogGauge
-                value={selectedVessel.fuelConsumption}
-                min={0}
-                max={100}
-                unit="L/h"
-                label="Fuel Consumption"
-                color="red"
-              />
             </div>
           </div>
         </div>
