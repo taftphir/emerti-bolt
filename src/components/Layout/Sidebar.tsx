@@ -3,7 +3,8 @@ import {
   BarChart3, 
   Map, 
   Activity, 
-  FileBarChart, 
+  FileBarChart,
+  TrendingUp,
   Settings, 
   Users,
   Ship,
@@ -20,10 +21,10 @@ interface SidebarProps {
 
 const menuItems = [
   { id: 'dashboard', label: 'Dashboard', icon: BarChart3 },
+  { id: 'daily-report', label: 'Daily Report', icon: TrendingUp },
   { id: 'latest-data', label: 'Latest Data', icon: Activity, parent: 'monitoring' },
   { id: 'map', label: 'Map Lokasi', icon: Map, parent: 'monitoring' },
-  { id: 'data-history', label: 'Data History', icon: FileBarChart, parent: 'monitoring' },
-  { id: 'daily-report', label: 'Daily Report', icon: FileBarChart, parent: 'monitoring' },
+  { id: 'data-history', label: 'Data History', icon: BarChart3, parent: 'monitoring' },
   { id: 'users', label: 'User Management', icon: Users, parent: 'configuration' },
   { id: 'vessels', label: 'Vessel Management', icon: Ship, parent: 'configuration' },
   { id: 'vessel-types', label: 'Vessel Types', icon: Layers, parent: 'configuration' },

@@ -16,11 +16,11 @@ export default function PowerSourceIndicator({
   blackout = false
 }: PowerSourceIndicatorProps) {
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-3 sm:p-6">
+    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 sm:p-6">
       <div className="flex flex-col items-center">
-        <h3 className="text-xs sm:text-sm font-medium text-gray-600 mb-2 sm:mb-4 text-center">Power Source & Alarm</h3>
+        <h3 className="text-sm sm:text-base font-semibold text-gray-700 mb-3 sm:mb-4 text-center">Power Source & Alarm</h3>
         
-        <div className="relative w-32 h-32 sm:w-48 sm:h-48 mb-2 sm:mb-4">
+        <div className="relative w-48 h-48 sm:w-64 sm:h-64 lg:w-72 lg:h-72 mb-3 sm:mb-4">
           <img 
             src="/power source & alarm.jpeg" 
             alt="Power Source & Alarm"
@@ -30,46 +30,46 @@ export default function PowerSourceIndicator({
           {/* Status overlays */}
           <div className="absolute inset-0 flex flex-col justify-center items-center space-y-2">
             {/* AC Power Status */}
-            <div className={`w-12 h-8 sm:w-16 sm:h-10 rounded ${acPower ? 'bg-green-500' : 'bg-gray-400'} opacity-80 flex items-center justify-center`}>
-              <span className="text-white text-xs sm:text-xs font-bold">AC</span>
+            <div className={`w-16 h-10 sm:w-20 sm:h-12 rounded ${acPower ? 'bg-green-500' : 'bg-gray-400'} opacity-90 flex items-center justify-center shadow-lg`}>
+              <span className="text-white text-sm sm:text-base font-bold">AC</span>
             </div>
             
             {/* DC Power Status */}
-            <div className={`w-12 h-8 sm:w-16 sm:h-10 rounded ${dcPower ? 'bg-green-500' : 'bg-gray-400'} opacity-80 flex items-center justify-center`}>
-              <span className="text-white text-xs sm:text-xs font-bold">DC</span>
+            <div className={`w-16 h-10 sm:w-20 sm:h-12 rounded ${dcPower ? 'bg-green-500' : 'bg-gray-400'} opacity-90 flex items-center justify-center shadow-lg`}>
+              <span className="text-white text-sm sm:text-base font-bold">DC</span>
             </div>
             
             {/* Backup Battery Status */}
-            <div className={`w-16 h-8 sm:w-20 sm:h-10 rounded ${backupBattery ? 'bg-green-500' : 'bg-gray-400'} opacity-80 flex items-center justify-center`}>
-              <span className="text-white text-xs sm:text-xs font-bold">BACKUP</span>
+            <div className={`w-20 h-10 sm:w-24 sm:h-12 rounded ${backupBattery ? 'bg-green-500' : 'bg-gray-400'} opacity-90 flex items-center justify-center shadow-lg`}>
+              <span className="text-white text-sm sm:text-base font-bold">BACKUP</span>
             </div>
             
             {/* Alarm and Blackout indicators */}
-            <div className="flex space-x-4 mt-2">
-              <div className={`w-6 h-6 sm:w-8 sm:h-8 rounded-full ${alarm ? 'bg-yellow-500' : 'bg-gray-300'} opacity-90`}></div>
-              <div className={`w-6 h-6 sm:w-8 sm:h-8 rounded-full ${blackout ? 'bg-red-500' : 'bg-gray-300'} opacity-90`}></div>
+            <div className="flex space-x-6 mt-3">
+              <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full ${alarm ? 'bg-yellow-500' : 'bg-gray-300'} opacity-90 shadow-lg`}></div>
+              <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full ${blackout ? 'bg-red-500' : 'bg-gray-300'} opacity-90 shadow-lg`}></div>
             </div>
           </div>
         </div>
         
         {/* Status labels */}
-        <div className="grid grid-cols-2 gap-1 sm:gap-2 text-xs text-center w-full">
-          <div className={`p-2 rounded ${acPower ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-600'}`}>
+        <div className="grid grid-cols-2 gap-2 sm:gap-3 text-sm text-center w-full">
+          <div className={`p-3 rounded-lg ${acPower ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-600'} font-medium`}>
             AC Power
           </div>
-          <div className={`p-2 rounded ${dcPower ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-600'}`}>
+          <div className={`p-3 rounded-lg ${dcPower ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-600'} font-medium`}>
             DC Power
           </div>
-          <div className={`p-2 rounded ${backupBattery ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-600'}`}>
+          <div className={`p-3 rounded-lg ${backupBattery ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-600'} font-medium`}>
             Backup Battery
           </div>
-          <div className={`p-2 rounded ${alarm ? 'bg-yellow-100 text-yellow-800' : 'bg-gray-100 text-gray-600'}`}>
+          <div className={`p-3 rounded-lg ${alarm ? 'bg-yellow-100 text-yellow-800' : 'bg-gray-100 text-gray-600'} font-medium`}>
             {alarm ? 'Alarm Active' : 'No Alarm'}
           </div>
         </div>
         
         {blackout && (
-          <div className="mt-1 sm:mt-2 px-2 sm:px-3 py-1 bg-red-100 text-red-800 text-xs rounded-full font-medium">
+          <div className="mt-2 sm:mt-3 px-3 sm:px-4 py-2 bg-red-100 text-red-800 text-sm rounded-full font-semibold shadow-sm">
             Blackout Detected
           </div>
         )}

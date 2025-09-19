@@ -82,11 +82,11 @@ export default function AnalogGauge({
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-3 sm:p-6">
+    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 sm:p-6">
       <div className="flex flex-col items-center">
-        <h3 className="text-xs sm:text-sm font-medium text-gray-600 mb-2 sm:mb-4 text-center">{label}</h3>
+        <h3 className="text-sm sm:text-base font-semibold text-gray-700 mb-3 sm:mb-4 text-center">{label}</h3>
         
-        <div className="relative w-32 h-32 sm:w-48 sm:h-48 mb-2 sm:mb-4">
+        <div className="relative w-48 h-48 sm:w-64 sm:h-64 lg:w-72 lg:h-72 mb-3 sm:mb-4">
           {/* Background gauge image */}
           <img 
             src={getBackgroundImage()} 
@@ -108,8 +108,8 @@ export default function AnalogGauge({
           </div>
           
           {/* Digital value display */}
-          <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2">
-            <div className="bg-black bg-opacity-80 text-green-400 px-2 py-1 rounded text-xs font-mono border border-gray-600 min-w-16 text-center">
+          <div className="absolute bottom-8 sm:bottom-12 left-1/2 transform -translate-x-1/2">
+            <div className="bg-black bg-opacity-90 text-green-400 px-3 py-2 rounded text-sm sm:text-base font-mono border border-gray-600 min-w-20 text-center shadow-lg">
               {isRPMGauge ? (
                 getDisplayValue().padStart(4, '0')
               ) : isHeadingGauge ? (

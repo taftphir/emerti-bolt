@@ -48,10 +48,8 @@ export default function VesselMap() {
 
   return (
     <div>
-      <div className="grid grid-cols-1 gap-4 sm:gap-6">
-        <div>
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-            <div className="h-64 sm:h-80 lg:h-96 relative">
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+        <div className="h-[70vh] lg:h-[80vh] relative">
               {/* OpenStreetMap iframe */}
               <iframe
                 src="https://www.openstreetmap.org/export/embed.html?bbox=112.5%2C-7.5%2C115.1%2C-6.5&layer=mapnik&marker=-7.0%2C113.8"
@@ -165,8 +163,6 @@ export default function VesselMap() {
                 </a>
               </div>
             </div>
-          </div>
-        </div>
       </div>
     </div>
   );
