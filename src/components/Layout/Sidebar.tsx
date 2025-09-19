@@ -85,16 +85,10 @@ export default function Sidebar({ activeSection, onSectionChange }: SidebarProps
         
       <div className={`mb-8 ${isCollapsed ? 'lg:text-center' : ''} flex items-center space-x-3`}>
         <img 
-          src="/emerti-logo.png" 
+          src="https://images.pexels.com/photos/163236/luxury-yacht-boat-speed-water-163236.jpeg?auto=compress&cs=tinysrgb&w=400" 
           alt="E-Merti Logo" 
           className={`${isCollapsed ? 'w-8 h-8 lg:mx-auto' : 'w-10 h-10'} object-contain`}
         />
-        {!isCollapsed && (
-          <div>
-            <h1 className="text-xl sm:text-2xl font-bold text-orange-400">E-Merti</h1>
-            <p className="text-blue-300 text-xs sm:text-sm">Vessel Monitoring</p>
-          </div>
-        )}
       </div>
       
       <nav>

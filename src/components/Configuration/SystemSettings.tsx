@@ -9,7 +9,7 @@ interface SystemConfig {
 
 const defaultConfig: SystemConfig = {
   companyName: 'E-Merti Fleet Management',
-  companyLogo: '/emerti-logo.png',
+  companyLogo: 'https://images.pexels.com/photos/163236/luxury-yacht-boat-speed-water-163236.jpeg?auto=compress&cs=tinysrgb&w=400',
   themeColor: '#1e40af'
 };
 
@@ -30,6 +30,7 @@ export default function SystemSettings() {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string>('');
   const [isSaving, setIsSaving] = useState(false);
+  const [saveMessage, setSaveMessage] = useState<string>('');
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -53,6 +54,7 @@ export default function SystemSettings() {
 
   const handleSave = async () => {
     setIsSaving(true);
+    setSaveMessage('');
     
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 1000));
@@ -61,7 +63,10 @@ export default function SystemSettings() {
     localStorage.setItem('systemConfig', JSON.stringify(config));
     
     setIsSaving(false);
-    alert('Settings saved successfully!');
+    setSaveMessage('Settings saved successfully!');
+    
+    // Clear message after 3 seconds
+    setTimeout(() => setSaveMessage(''), 3000);
   };
 
   const handleReset = () => {
@@ -69,6 +74,8 @@ export default function SystemSettings() {
       setConfig(defaultConfig);
       setImageFile(null);
       setImagePreview('');
+      setSaveMessage('Settings reset to default');
+      setTimeout(() => setSaveMessage(''), 3000);
     }
   };
 
@@ -80,6 +87,11 @@ export default function SystemSettings() {
           <p className="text-sm text-gray-600">Configure company branding and theme</p>
         </div>
         <div className="flex space-x-3">
+          {saveMessage && (
+            <div className="flex items-center px-3 py-2 bg-green-100 text-green-800 rounded-lg text-sm">
+              {saveMessage}
+            </div>
+          )}
           <button
             onClick={() => setShowPreview(!showPreview)}
             className="flex items-center space-x-2 px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 text-sm"

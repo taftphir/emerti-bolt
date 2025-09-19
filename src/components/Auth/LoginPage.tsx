@@ -41,17 +41,6 @@ export default function LoginPage() {
             </div>
             <h1 className="text-3xl font-bold text-gray-800">E-Merti</h1>
             <p className="text-gray-600 mt-2">Vessel Monitoring System</p>
-            <div className="mt-4 text-center">
-              <p className="text-gray-500 text-sm">Powered by</p>
-              <a 
-                href="https://alugara.id" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-blue-600 text-sm font-semibold hover:text-blue-800 transition-colors"
-              >
-                alugara.id
-              </a>
-            </div>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
@@ -98,14 +87,6 @@ export default function LoginPage() {
               </div>
             )}
 
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
-              <p className="text-blue-600 text-sm">
-                <strong>Default credentials:</strong><br />
-                Username: alugara<br />
-                Password: alugara
-              </p>
-            </div>
-
             <button
               type="submit"
               disabled={loading}
@@ -113,6 +94,18 @@ export default function LoginPage() {
             >
               {loading ? 'Signing in...' : 'Sign In'}
             </button>
+            
+            <div className="mt-6 text-center">
+              <p className="text-gray-500 text-sm">Powered by</p>
+              <a 
+                href="https://alugara.id" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-blue-600 text-sm font-semibold hover:text-blue-800 transition-colors"
+              >
+                alugara.id
+              </a>
+            </div>
           </form>
         </div>
       </div>
