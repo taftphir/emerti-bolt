@@ -163,7 +163,7 @@ export default function Sidebar({ activeSection, onSectionChange }: SidebarProps
                 rel="noopener noreferrer"
                 className="text-orange-400 text-sm font-semibold hover:text-orange-300 transition-colors"
               >
-                alugara.id
+                Alugara Inovasi Utama
               </a>
             </div>
           ) : (
@@ -173,7 +173,7 @@ export default function Sidebar({ activeSection, onSectionChange }: SidebarProps
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="text-orange-400 text-xs font-bold hover:text-orange-300 transition-colors"
-                title="Powered by alugara.id"
+                title="Powered by Alugara Inovasi Utama"
               >
                 A
               </a>
