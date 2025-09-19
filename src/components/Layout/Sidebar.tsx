@@ -83,18 +83,15 @@ export default function Sidebar({ activeSection, onSectionChange }: SidebarProps
         <button
           onClick={toggleCollapse}
           className="hidden lg:block absolute top-4 right-4 text-white p-1 rounded transition-colors"
-          style={{ 
-            ':hover': { backgroundColor: `${config.themeColor}dd` }
-          }}
         >
           <MenuIcon size={20} />
         </button>
         
-        <div className={`mb-8 lg:text-center ${isCollapsed ? 'block: none' : ''} flex items-center space-x-3`}>
+        <div className={`mb-8 lg:text-center ${isCollapsed ? 'hidden' : 'flex'} items-center space-x-3`}>
           <img 
             src="/fms.png" 
             alt="Application Logo" 
-            className={`${isCollapsed ? 'w-24 h-16 lg:mx-auto' : 'w-36 h-20'} object-contain`}
+            className="w-36 h-20 object-contain"
           />
         </div>
       
