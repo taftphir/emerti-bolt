@@ -177,9 +177,9 @@ export default function DataHistory() {
         record.longitude.toFixed(6),
         record.speed.toFixed(1),
         record.heading.toString(),
-        record.rpmPortside.toString(),
-        record.rpmStarboard.toString(),
-        record.rpmCenter.toString()
+        record.rpmPortside.toFixed(2),
+        record.rpmStarboard.toFixed(2),
+        record.rpmCenter.toFixed(2)
       ])
     ].map(row => row.join(',')).join('\n');
 
