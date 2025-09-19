@@ -223,7 +223,7 @@ export default function DailyReport() {
           </div> */}
         </div>
 
-        <button className="flex items-center space-x-1 sm:space-x-2 px-3 sm:px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm">
+        <button className="flex space-x-1 sm:space-x-2 px-3 sm:px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm">
           <Download size={16} />
           <span className="hidden sm:inline">Export PDF</span>
           <span className="sm:hidden">Export</span>
