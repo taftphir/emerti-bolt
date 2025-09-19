@@ -92,16 +92,10 @@ export default function Sidebar({ activeSection, onSectionChange }: SidebarProps
         
         <div className={`mb-8 ${isCollapsed ? 'lg:text-center' : ''} flex items-center space-x-3`}>
           <img 
-            src={config.companyLogo} 
+            src="/fms.png" 
             alt="Company Logo" 
-            className={`${isCollapsed ? 'w-8 h-8 lg:mx-auto' : 'w-10 h-10'} object-contain rounded`}
+            className={`${isCollapsed ? 'w-12 h-12 lg:mx-auto' : 'w-16 h-16'} object-contain`}
           />
-          {!isCollapsed && (
-            <div>
-              <h1 className="text-lg font-bold text-orange-400">E-Merti</h1>
-              <p className="text-blue-300 text-xs">{config.companyName}</p>
-            </div>
-          )}
         </div>
       
       <nav>
