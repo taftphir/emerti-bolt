@@ -1,10 +1,47 @@
 import React from 'react';
 import { Ship, Activity, AlertTriangle, AlertCircle, Clock } from 'lucide-react';
 import StatCard from './StatCard';
-import { getDashboardStats, mockVessels } from '../../data/mockData';
+import { getDashboardStats, mockVessels, getHistoryData } from '../../data/mockData';
 
 export default function DashboardOverview() {
   const stats = getDashboardStats();
+  const historyData = getHistoryData();
+  
+  // Get latest data for each vessel from history
+  const getLatestVesselData = () => {
+    const vesselMap = new Map();
+    
+    // Get the most recent record for each vessel
+    historyData.forEach(record => {
+      if (!vesselMap.has(record.vesselId) || 
+          record.timestamp > vesselMap.get(record.vesselId).timestamp) {
+        vesselMap.set(record.vesselId, record);
+      }
+    });
+    
+    // Merge with vessel info
+    return mockVessels.map(vessel => {
+      const latestData = vesselMap.get(vessel.id);
+      if (latestData) {
+        return {
+          ...vessel,
+          speed: parseFloat(latestData.speed.toFixed(2)),
+          heading: Math.round(latestData.heading),
+          position: {
+            lat: parseFloat(latestData.latitude.toFixed(2)),
+            lng: parseFloat(latestData.longitude.toFixed(2))
+          },
+          rpmPortside: Math.round(latestData.rpmPortside),
+          rpmStarboard: Math.round(latestData.rpmStarboard),
+          rpmCenter: Math.round(latestData.rpmCenter),
+          lastUpdate: latestData.timestamp
+        };
+      }
+      return vessel;
+    });
+  };
+  
+  const vesselsWithLatestData = getLatestVesselData();
 
   return (
     <div>
@@ -46,7 +83,7 @@ export default function DashboardOverview() {
           </div>
           <div className="p-4 sm:p-6">
             <div className="space-y-4">
-              {mockVessels.map((vessel) => (
+              {vesselsWithLatestData.map((vessel) => (
                 <div key={vessel.id} className="flex items-center justify-between p-3 sm:p-4 bg-gray-50 rounded-lg">
                   <div className="flex items-center space-x-3">
                     <div className={`w-3 h-3 rounded-full ${
@@ -59,7 +96,7 @@ export default function DashboardOverview() {
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className="text-xs sm:text-sm font-medium text-gray-800">{vessel.speed} kts</p>
+                    <p className="text-xs sm:text-sm font-medium text-gray-800">{vessel.speed.toFixed(2)} kts</p>
                     <p className="text-xs text-gray-500">{vessel.heading}°</p>
                   </div>
                 </div>
