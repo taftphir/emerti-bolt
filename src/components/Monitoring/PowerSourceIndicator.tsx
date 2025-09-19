@@ -71,16 +71,18 @@ export default function PowerSourceIndicator({
       
       {/* Critical Alert */}
       {blackout && (
-        <div className={`p-3 sm:p-4 rounded-lg text-center transition-all ${acPower ? 'bg-green-100 text-green-800 border-2 border-green-300' : 'bg-gray-100 text-gray-600 border-2 border-gray-300'}`}>
-          <div className={`w-8 h-8 sm:w-10 sm:h-10 mx-auto mb-2 rounded-full ${acPower ? 'bg-green-500' : 'bg-gray-400'} flex items-center justify-center shadow-lg`}>
-            <span className="text-white text-xs sm:text-sm font-bold">AC</span>
+        <>
+          <div className={`p-3 sm:p-4 rounded-lg text-center transition-all ${acPower ? 'bg-green-100 text-green-800 border-2 border-green-300' : 'bg-gray-100 text-gray-600 border-2 border-gray-300'}`}>
+            <div className={`w-8 h-8 sm:w-10 sm:h-10 mx-auto mb-2 rounded-full ${acPower ? 'bg-green-500' : 'bg-gray-400'} flex items-center justify-center shadow-lg`}>
+              <span className="text-white text-xs sm:text-sm font-bold">AC</span>
+            </div>
+            <div className="text-xs sm:text-sm font-medium">AC Power</div>
           </div>
-          <div className="text-xs sm:text-sm font-medium">AC Power</div>
-        </div>
 
-        <div className="mt-6 p-3 bg-red-100 border-2 border-red-300 text-red-800 text-sm rounded-lg font-semibold text-center">
-          ⚠️ BLACKOUT DETECTED - IMMEDIATE ACTION REQUIRED
-        </div>
+          <div className="mt-6 p-3 bg-red-100 border-2 border-red-300 text-red-800 text-sm rounded-lg font-semibold text-center">
+            ⚠️ BLACKOUT DETECTED - IMMEDIATE ACTION REQUIRED
+          </div>
+        </>
       )}
     </div>
   );
