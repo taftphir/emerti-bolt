@@ -93,8 +93,8 @@ export default function Sidebar({ activeSection, onSectionChange }: SidebarProps
         <div className={`mb-8 ${isCollapsed ? 'lg:text-center' : ''} flex items-center space-x-3`}>
           <img 
             src="/fms.png" 
-            alt="Company Logo" 
-            className={`${isCollapsed ? 'w-24 h-24 lg:mx-auto' : 'w-36 h-36'} object-contain`}
+            alt="Application Logo" 
+            className={`${isCollapsed ? 'w-24 h-16 lg:mx-auto' : 'w-36 h-20'} object-contain`}
           />
         </div>
       
