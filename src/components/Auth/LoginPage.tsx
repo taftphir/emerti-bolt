@@ -35,11 +35,11 @@ export default function LoginPage() {
         <div className="bg-white rounded-2xl shadow-2xl p-8">
           <div className="text-center mb-8">
             <div>
-            <img 
-              src="/fms.png" 
-              alt="Company Logo" 
-              className="w-32 h-32 object-contain mx-auto mb-4"
-            />
+              <img 
+                src={config.companyLogo} 
+                alt="Company Logo" 
+                className="w-32 h-32 object-contain mx-auto mb-4"
+              />
             </div>
           </div>
 

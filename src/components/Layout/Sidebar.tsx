@@ -94,7 +94,7 @@ export default function Sidebar({ activeSection, onSectionChange }: SidebarProps
           <img 
             src="/fms.png" 
             alt="Company Logo" 
-            className={`${isCollapsed ? 'w-12 h-12 lg:mx-auto' : 'w-16 h-16'} object-contain`}
+            className={`${isCollapsed ? 'w-16 h-16 lg:mx-auto' : 'w-24 h-24'} object-contain`}
           />
         </div>
       
