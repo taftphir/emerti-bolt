@@ -90,7 +90,7 @@ export default function Sidebar({ activeSection, onSectionChange }: SidebarProps
           <MenuIcon size={20} />
         </button>
         
-        <div className={`mb-8 lg:text-center ${isCollapsed ? 'display: none' : ''} flex items-center space-x-3`}>
+        <div className={`mb-8 lg:text-center ${isCollapsed ? 'block: none' : ''} flex items-center space-x-3`}>
           <img 
             src="/fms.png" 
             alt="Application Logo" 
