@@ -199,7 +199,7 @@ export const generateHistoryData = (): HistoryRecord[] => {
       }
     }
     else {
-        const timestamp = new Date(now.getTime() - (0 * 2 * 60 * 60 * 1000)); // Every 2 hours
+        let timestamp = new Date(now.getTime() - (0 * 2 * 60 * 60 * 1000)); // Every 2 hours
         records.push({
           id: `${vessel.id}-${0}`,
           vesselId: vessel.id,
@@ -213,7 +213,7 @@ export const generateHistoryData = (): HistoryRecord[] => {
           rpmStarboard: Math.max(0, vessel.rpmStarboard + (Math.random() - 0.5) * 400),
           rpmCenter: Math.max(0, vessel.rpmCenter + (Math.random() - 0.5) * 400),
         });
-        const timestamp = new Date(now.getTime() - (1 * 2 * 60 * 60 * 1000)); // Every 2 hours
+        timestamp = new Date(now.getTime() - (1 * 2 * 60 * 60 * 1000)); // Every 2 hours
         records.push({
           id: `${vessel.id}-${1}`,
           vesselId: vessel.id,
@@ -227,7 +227,7 @@ export const generateHistoryData = (): HistoryRecord[] => {
           rpmStarboard: Math.max(0, vessel.rpmStarboard + (Math.random() - 0.5) * 400),
           rpmCenter: Math.max(0, vessel.rpmCenter + (Math.random() - 0.5) * 400),
         });
-        const timestamp = new Date(now.getTime() - (2 * 2 * 60 * 60 * 1000)); // Every 2 hours
+        timestamp = new Date(now.getTime() - (2 * 2 * 60 * 60 * 1000)); // Every 2 hours
         records.push({
           id: `${vessel.id}-${2}`,
           vesselId: vessel.id,
@@ -241,7 +241,7 @@ export const generateHistoryData = (): HistoryRecord[] => {
           rpmStarboard: Math.max(0, vessel.rpmStarboard + (Math.random() - 0.5) * 400),
           rpmCenter: Math.max(0, vessel.rpmCenter + (Math.random() - 0.5) * 400),
         });
-        const timestamp = new Date(now.getTime() - (3 * 2 * 60 * 60 * 1000)); // Every 2 hours
+        timestamp = new Date(now.getTime() - (3 * 2 * 60 * 60 * 1000)); // Every 2 hours
         records.push({
           id: `${vessel.id}-${3}`,
           vesselId: vessel.id,
