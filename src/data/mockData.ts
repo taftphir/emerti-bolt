@@ -179,22 +179,80 @@ export const generateHistoryData = (): HistoryRecord[] => {
   const now = new Date();
   
   mockVessels.forEach((vessel) => {
-    // Generate 100 records per vessel over the last 7 days
-    for (let i = 0; i < 100; i++) {
-      const timestamp = new Date(now.getTime() - (i * 2 * 60 * 60 * 1000)); // Every 2 hours
-      records.push({
-        id: `${vessel.id}-${i}`,
-        vesselId: vessel.id,
-        vesselName: vessel.name,
-        timestamp,
-        latitude: vessel.position.lat + (Math.random() - 0.5) * 0.1,
-        longitude: vessel.position.lng + (Math.random() - 0.5) * 0.1,
-        speed: Math.max(0, vessel.speed + (Math.random() - 0.5) * 8),
-        heading: Math.floor(Math.random() * 360),
-        rpmPortside: Math.max(0, vessel.rpmPortside + (Math.random() - 0.5) * 400),
-        rpmStarboard: Math.max(0, vessel.rpmStarboard + (Math.random() - 0.5) * 400),
-        rpmCenter: Math.max(0, vessel.rpmCenter + (Math.random() - 0.5) * 400),
-      });
+    if (vessel.name != 'Sinar Bahari') {
+      // Generate 100 records per vessel over the last 7 days
+      for (let i = 0; i < 100; i++) {
+        const timestamp = new Date(now.getTime() - (i * 2 * 60 * 60 * 1000)); // Every 2 hours
+        records.push({
+          id: `${vessel.id}-${i}`,
+          vesselId: vessel.id,
+          vesselName: vessel.name,
+          timestamp,
+          latitude: vessel.position.lat + (Math.random() - 0.5) * 0.1,
+          longitude: vessel.position.lng + (Math.random() - 0.5) * 0.1,
+          speed: Math.max(0, vessel.speed + (Math.random() - 0.5) * 8),
+          heading: Math.floor(Math.random() * 360),
+          rpmPortside: Math.max(0, vessel.rpmPortside + (Math.random() - 0.5) * 400),
+          rpmStarboard: Math.max(0, vessel.rpmStarboard + (Math.random() - 0.5) * 400),
+          rpmCenter: Math.max(0, vessel.rpmCenter + (Math.random() - 0.5) * 400),
+        });
+      }
+      else {
+        records.push({
+          id: `${vessel.id}-${i}`,
+          vesselId: vessel.id,
+          vesselName: vessel.name,
+          timestamp,
+          latitude: -7.38542,
+          longitude: 113.839851,
+          speed: Math.max(0, vessel.speed + (Math.random() - 0.5) * 8),
+          heading: Math.floor(Math.random() * 360),
+          rpmPortside: Math.max(0, vessel.rpmPortside + (Math.random() - 0.5) * 400),
+          rpmStarboard: Math.max(0, vessel.rpmStarboard + (Math.random() - 0.5) * 400),
+          rpmCenter: Math.max(0, vessel.rpmCenter + (Math.random() - 0.5) * 400),
+        });
+      }
+        records.push({
+          id: `${vessel.id}-${i}`,
+          vesselId: vessel.id,
+          vesselName: vessel.name,
+          timestamp,
+          latitude: -7.384068,
+          longitude: 113.83886,
+          speed: Math.max(0, vessel.speed + (Math.random() - 0.5) * 8),
+          heading: Math.floor(Math.random() * 360),
+          rpmPortside: Math.max(0, vessel.rpmPortside + (Math.random() - 0.5) * 400),
+          rpmStarboard: Math.max(0, vessel.rpmStarboard + (Math.random() - 0.5) * 400),
+          rpmCenter: Math.max(0, vessel.rpmCenter + (Math.random() - 0.5) * 400),
+        });
+      }
+        records.push({
+          id: `${vessel.id}-${i}`,
+          vesselId: vessel.id,
+          vesselName: vessel.name,
+          timestamp,
+          latitude: -7.383173,
+          longitude: 113.838173,
+          speed: Math.max(0, vessel.speed + (Math.random() - 0.5) * 8),
+          heading: Math.floor(Math.random() * 360),
+          rpmPortside: Math.max(0, vessel.rpmPortside + (Math.random() - 0.5) * 400),
+          rpmStarboard: Math.max(0, vessel.rpmStarboard + (Math.random() - 0.5) * 400),
+          rpmCenter: Math.max(0, vessel.rpmCenter + (Math.random() - 0.5) * 400),
+        });
+        records.push({
+          id: `${vessel.id}-${i}`,
+          vesselId: vessel.id,
+          vesselName: vessel.name,
+          timestamp,
+          latitude: -7.382483,
+          longitude: 113.8377,
+          speed: Math.max(0, vessel.speed + (Math.random() - 0.5) * 8),
+          heading: Math.floor(Math.random() * 360),
+          rpmPortside: Math.max(0, vessel.rpmPortside + (Math.random() - 0.5) * 400),
+          rpmStarboard: Math.max(0, vessel.rpmStarboard + (Math.random() - 0.5) * 400),
+          rpmCenter: Math.max(0, vessel.rpmCenter + (Math.random() - 0.5) * 400),
+        });
+      }
     }
   });
   
