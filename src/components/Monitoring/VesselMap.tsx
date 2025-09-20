@@ -1,13 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { MapPin, Navigation, Zap, Clock, Route, Eye } from 'lucide-react';
+import { MapPin, Navigation, Zap, Clock, Eye } from 'lucide-react';
 import { mockVessels } from '../../data/mockData';
 import { Vessel } from '../../types/vessel';
 
-interface VesselMapProps {
-  onShowTracking?: (vesselId: string) => void;
-}
-
-export default function VesselMap({ onShowTracking }: VesselMapProps) {
+export default function VesselMap() {
   const [selectedVessel, setSelectedVessel] = useState<Vessel | null>(null);
   const [mapLoaded, setMapLoaded] = useState(false);
 
@@ -130,13 +126,6 @@ export default function VesselMap({ onShowTracking }: VesselMapProps) {
                             {/* Action buttons */}
                             <div className="mt-3 pt-2 border-t border-gray-200">
                               <div className="flex space-x-2">
-                                <button
-                                  onClick={() => onShowTracking?.(vessel.id)}
-                                  className="flex items-center space-x-1 px-2 py-1 bg-blue-600 text-white rounded text-xs hover:bg-blue-700 transition-colors"
-                                >
-                                  <Route size={12} />
-                                  <span>Track</span>
-                                </button>
                                 <button className="flex items-center space-x-1 px-2 py-1 bg-gray-600 text-white rounded text-xs hover:bg-gray-700 transition-colors">
                                   <Eye size={12} />
                                   <span>Details</span>

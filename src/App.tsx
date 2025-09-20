@@ -8,7 +8,6 @@ import DashboardOverview from './components/Dashboard/DashboardOverview';
 import LatestData from './components/Monitoring/LatestData';
 import VesselMap from './components/Monitoring/VesselMap';
 import DataHistory from './components/Monitoring/DataHistory';
-import DailyReport from './components/Monitoring/DailyReport';
 import UserManagement from './components/Configuration/UserManagement';
 import VesselManagement from './components/Configuration/VesselManagement';
 import VesselTypeManagement from './components/Configuration/VesselTypeManagement';
@@ -30,8 +29,6 @@ function MainApp() {
         return <LatestData />;
       case 'map':
         return <VesselMap />;
-      case 'data-history':
-        return <DataHistory />;
       case 'daily-report':
         return <DailyReport />;
       case 'users':
