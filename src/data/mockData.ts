@@ -200,7 +200,7 @@ export const generateHistoryData = (): HistoryRecord[] => {
     }
     else {
         records.push({
-          id: `${vessel.id}-${i}`,
+          id: `${vessel.id}-${0}`,
           vesselId: vessel.id,
           vesselName: vessel.name,
           timestamp,
@@ -213,7 +213,7 @@ export const generateHistoryData = (): HistoryRecord[] => {
           rpmCenter: Math.max(0, vessel.rpmCenter + (Math.random() - 0.5) * 400),
         });
         records.push({
-          id: `${vessel.id}-${i}`,
+          id: `${vessel.id}-${1}`,
           vesselId: vessel.id,
           vesselName: vessel.name,
           timestamp,
@@ -226,7 +226,7 @@ export const generateHistoryData = (): HistoryRecord[] => {
           rpmCenter: Math.max(0, vessel.rpmCenter + (Math.random() - 0.5) * 400),
         });
         records.push({
-          id: `${vessel.id}-${i}`,
+          id: `${vessel.id}-${2}`,
           vesselId: vessel.id,
           vesselName: vessel.name,
           timestamp,
@@ -239,7 +239,7 @@ export const generateHistoryData = (): HistoryRecord[] => {
           rpmCenter: Math.max(0, vessel.rpmCenter + (Math.random() - 0.5) * 400),
         });
         records.push({
-          id: `${vessel.id}-${i}`,
+          id: `${vessel.id}-${3}`,
           vesselId: vessel.id,
           vesselName: vessel.name,
           timestamp,
