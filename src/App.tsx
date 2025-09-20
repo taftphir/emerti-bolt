@@ -1,27 +1,36 @@
 import React, { useState } from 'react';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
-import { SystemConfigProvider } from './contexts/SystemConfigContext';
 import LoginPage from './components/Auth/LoginPage';
 import Sidebar from './components/Layout/Sidebar';
 import Header from './components/Layout/Header';
 import DashboardOverview from './components/Dashboard/DashboardOverview';
 import LatestData from './components/Monitoring/LatestData';
 import VesselMap from './components/Monitoring/VesselMap';
+import VesselTracking from './components/Monitoring/VesselTracking';
 import DataHistory from './components/Monitoring/DataHistory';
 import DailyReport from './components/Monitoring/DailyReport';
 import UserManagement from './components/Configuration/UserManagement';
 import VesselManagement from './components/Configuration/VesselManagement';
 import VesselTypeManagement from './components/Configuration/VesselTypeManagement';
-import SystemSettings from './components/Configuration/SystemSettings';
 
 function MainApp() {
   const { isAuthenticated } = useAuth();
   const [activeSection, setActiveSection] = useState('dashboard');
+  const [trackingVesselId, setTrackingVesselId] = useState<string | null>(null);
 
   if (!isAuthenticated) {
     return <LoginPage />;
   }
 
+  const handleShowTracking = (vesselId: string) => {
+    setTrackingVesselId(vesselId);
+    setActiveSection('vessel-tracking');
+  };
+
+  const handleBackFromTracking = () => {
+    setTrackingVesselId(null);
+    setActiveSection('map');
+  };
   const renderContent = () => {
     switch (activeSection) {
       case 'dashboard':
@@ -29,7 +38,9 @@ function MainApp() {
       case 'latest-data':
         return <LatestData />;
       case 'map':
-        return <VesselMap />;
+        return <VesselMap onShowTracking={handleShowTracking} />;
+      case 'vessel-tracking':
+        return <VesselTracking vesselId={trackingVesselId || undefined} onBack={handleBackFromTracking} />;
       case 'data-history':
         return <DataHistory />;
       case 'daily-report':
@@ -40,8 +51,6 @@ function MainApp() {
         return <VesselManagement />;
       case 'vessel-types':
         return <VesselTypeManagement />;
-      case 'settings':
-        return <SystemSettings />;
       default:
         return <DashboardOverview />;
     }
@@ -65,11 +74,9 @@ function MainApp() {
 
 function App() {
   return (
-    <SystemConfigProvider>
-      <AuthProvider>
-        <MainApp />
-      </AuthProvider>
-    </SystemConfigProvider>
+    <AuthProvider>
+      <MainApp />
+    </AuthProvider>
   );
 }
 
