@@ -10,7 +10,8 @@ import {
   Layers,
   Menu,
   X,
-  Menu as MenuIcon
+  Menu as MenuIcon,
+  Route
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -22,6 +23,7 @@ const menuItems = [
   { id: 'dashboard', label: 'Dashboard', icon: BarChart3 },
   { id: 'latest-data', label: 'Latest Data', icon: Activity, parent: 'monitoring' },
   { id: 'map', label: 'Map Lokasi', icon: Map, parent: 'monitoring' },
+  { id: 'vessel-tracking', label: 'Vessel Tracking', icon: Route, parent: 'monitoring' },
   { id: 'data-history', label: 'Data History', icon: FileBarChart, parent: 'monitoring' },
   { id: 'daily-report', label: 'Daily Report', icon: FileBarChart, parent: 'monitoring' },
   { id: 'users', label: 'User Management', icon: Users, parent: 'configuration' },
