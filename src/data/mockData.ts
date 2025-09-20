@@ -197,7 +197,8 @@ export const generateHistoryData = (): HistoryRecord[] => {
           rpmCenter: Math.max(0, vessel.rpmCenter + (Math.random() - 0.5) * 400),
         });
       }
-      else {
+    }
+    else {
         records.push({
           id: `${vessel.id}-${i}`,
           vesselId: vessel.id,
@@ -250,7 +251,6 @@ export const generateHistoryData = (): HistoryRecord[] => {
           rpmStarboard: Math.max(0, vessel.rpmStarboard + (Math.random() - 0.5) * 400),
           rpmCenter: Math.max(0, vessel.rpmCenter + (Math.random() - 0.5) * 400),
         });
-      }
     }
   });
   
