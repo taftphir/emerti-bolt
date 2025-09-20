@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { Eye, EyeOff } from 'lucide-react';
+import { Ship, Eye, EyeOff } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
-import { useSystemConfig } from '../../contexts/SystemConfigContext';
 
 export default function LoginPage() {
   const [username, setUsername] = useState('');
@@ -10,7 +9,6 @@ export default function LoginPage() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
-  const { config } = useSystemConfig();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -20,7 +18,7 @@ export default function LoginPage() {
     try {
       const success = login(username, password);
       if (!success) {
-        setError('Invalid username or password');
+        setError('Invalid credentials. Use alugara/alugara');
       }
     } catch (err) {
       setError('Login failed. Please try again.');
@@ -34,11 +32,11 @@ export default function LoginPage() {
       <div className="w-full max-w-md">
         <div className="bg-white rounded-2xl shadow-2xl p-8">
           <div className="text-center mb-8">
-            <img 
-              src={config.companyLogo} 
-              alt="Company Logo" 
-              className="w-30 h-28 object-contain mx-auto mb-6" 
-            />
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-600 rounded-full mb-4">
+              <Ship className="text-white" size={32} />
+            </div>
+            <h1 className="text-3xl font-bold text-gray-800">E-Merti</h1>
+            <p className="text-gray-600 mt-2">Vessel Monitoring System</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
@@ -85,6 +83,14 @@ export default function LoginPage() {
               </div>
             )}
 
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+              <p className="text-blue-600 text-sm">
+                <strong>Default credentials:</strong><br />
+                Username: alugara<br />
+                Password: alugara
+              </p>
+            </div>
+
             <button
               type="submit"
               disabled={loading}
@@ -93,18 +99,6 @@ export default function LoginPage() {
               {loading ? 'Signing in...' : 'Sign In'}
             </button>
           </form>
-          
-          <div className="mt-8 text-center">
-            <p className="text-gray-500 text-sm">Powered by</p>
-            <a 
-              href="https://alugara.id" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="text-blue-600 text-sm font-semibold hover:underline transition-colors"
-            >
-              Alugara Inovasi Utama
-            </a>
-          </div>
         </div>
       </div>
     </div>

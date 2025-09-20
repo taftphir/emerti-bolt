@@ -1,7 +1,6 @@
 import React from 'react';
 import { LogOut, User, Bell } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
-import { useSystemConfig } from '../../contexts/SystemConfigContext';
 
 interface HeaderProps {
   activeSection: string;
@@ -9,7 +8,6 @@ interface HeaderProps {
 
 export default function Header({ activeSection }: HeaderProps) {
   const { user, logout } = useAuth();
-  const { config } = useSystemConfig();
 
   const getHeaderContent = () => {
     switch (activeSection) {
@@ -76,10 +74,6 @@ export default function Header({ activeSection }: HeaderProps) {
         </div>
         
         <div className="flex items-center space-x-2 sm:space-x-4">
-          <div className="text-sm font-medium text-gray-700 hidden sm:block">
-            {config.companyName}
-          </div>
-          
           <button className="p-2 text-gray-600 hover:text-gray-800 relative hidden sm:block">
             <Bell size={20} />
             <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">

@@ -16,74 +16,64 @@ export default function PowerSourceIndicator({
   blackout = false
 }: PowerSourceIndicatorProps) {
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 sm:p-6">
-      {/* Power Source Group */}
-      <div className="mb-6">
-        <h4 className="text-sm font-semibold text-gray-700 mb-3">Power Source</h4>
-        <div className="flex flex-wrap gap-3 sm:gap-4">
-          {/* AC Power */}
-          <div className={`flex-1 min-w-20 p-3 sm:p-4 rounded-lg text-center transition-all ${acPower ? 'bg-green-100 text-green-800 border-2 border-green-300' : 'bg-gray-100 text-gray-600 border-2 border-gray-300'}`}>
-            <div className={`w-8 h-8 sm:w-10 sm:h-10 mx-auto mb-2 rounded-full ${acPower ? 'bg-green-500' : 'bg-gray-400'} flex items-center justify-center shadow-lg`}>
-              <span className="text-white text-xs sm:text-sm font-bold">AC</span>
+    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-3 sm:p-6">
+      <div className="flex flex-col items-center">
+        <h3 className="text-xs sm:text-sm font-medium text-gray-600 mb-2 sm:mb-4 text-center">Power Source & Alarm</h3>
+        
+        <div className="relative w-32 h-32 sm:w-48 sm:h-48 mb-2 sm:mb-4">
+          <img 
+            src="/power source & alarm.jpeg" 
+            alt="Power Source & Alarm"
+            className="w-full h-full object-cover rounded-lg shadow-lg"
+          />
+          
+          {/* Status overlays */}
+          <div className="absolute inset-0 flex flex-col justify-center items-center space-y-2">
+            {/* AC Power Status */}
+            <div className={`w-12 h-8 sm:w-16 sm:h-10 rounded ${acPower ? 'bg-green-500' : 'bg-gray-400'} opacity-80 flex items-center justify-center`}>
+              <span className="text-white text-xs sm:text-xs font-bold">AC</span>
             </div>
-            <div className="text-xs sm:text-sm font-medium">AC Power</div>
-          </div>
-
-          {/* DC Power */}
-          <div className={`flex-1 min-w-20 p-3 sm:p-4 rounded-lg text-center transition-all ${dcPower ? 'bg-green-100 text-green-800 border-2 border-green-300' : 'bg-gray-100 text-gray-600 border-2 border-gray-300'}`}>
-            <div className={`w-8 h-8 sm:w-10 sm:h-10 mx-auto mb-2 rounded-full ${dcPower ? 'bg-green-500' : 'bg-gray-400'} flex items-center justify-center shadow-lg`}>
-              <span className="text-white text-xs sm:text-sm font-bold">DC</span>
+            
+            {/* DC Power Status */}
+            <div className={`w-12 h-8 sm:w-16 sm:h-10 rounded ${dcPower ? 'bg-green-500' : 'bg-gray-400'} opacity-80 flex items-center justify-center`}>
+              <span className="text-white text-xs sm:text-xs font-bold">DC</span>
             </div>
-            <div className="text-xs sm:text-sm font-medium">DC Power</div>
-          </div>
-
-          {/* Backup Battery */}
-          <div className={`flex-1 min-w-20 p-3 sm:p-4 rounded-lg text-center transition-all ${backupBattery ? 'bg-green-100 text-green-800 border-2 border-green-300' : 'bg-gray-100 text-gray-600 border-2 border-gray-300'}`}>
-            <div className={`w-8 h-8 sm:w-10 sm:h-10 mx-auto mb-2 rounded-full ${backupBattery ? 'bg-green-500' : 'bg-gray-400'} flex items-center justify-center shadow-lg`}>
-              <span className="text-white text-xs font-bold">BAT</span>
+            
+            {/* Backup Battery Status */}
+            <div className={`w-16 h-8 sm:w-20 sm:h-10 rounded ${backupBattery ? 'bg-green-500' : 'bg-gray-400'} opacity-80 flex items-center justify-center`}>
+              <span className="text-white text-xs sm:text-xs font-bold">BACKUP</span>
             </div>
-            <div className="text-xs sm:text-sm font-medium">Backup</div>
+            
+            {/* Alarm and Blackout indicators */}
+            <div className="flex space-x-4 mt-2">
+              <div className={`w-6 h-6 sm:w-8 sm:h-8 rounded-full ${alarm ? 'bg-yellow-500' : 'bg-gray-300'} opacity-90`}></div>
+              <div className={`w-6 h-6 sm:w-8 sm:h-8 rounded-full ${blackout ? 'bg-red-500' : 'bg-gray-300'} opacity-90`}></div>
+            </div>
           </div>
         </div>
-      </div>
-
-      {/* System Status Group */}
-      <div>
-        <h4 className="text-sm font-semibold text-gray-700 mb-3">System Status</h4>
-        <div className="flex flex-wrap gap-3 sm:gap-4">
-          {/* Alarm Status */}
-          <div className={`flex-1 min-w-20 p-3 sm:p-4 rounded-lg text-center transition-all ${alarm ? 'bg-yellow-100 text-yellow-800 border-2 border-yellow-300' : 'bg-gray-100 text-gray-600 border-2 border-gray-300'}`}>
-            <div className={`w-8 h-8 sm:w-10 sm:h-10 mx-auto mb-2 rounded-full ${alarm ? 'bg-yellow-500' : 'bg-gray-400'} flex items-center justify-center shadow-lg`}>
-              <span className="text-white text-xs font-bold">⚠</span>
-            </div>
-            <div className="text-xs sm:text-sm font-medium">Alarm</div>
+        
+        {/* Status labels */}
+        <div className="grid grid-cols-2 gap-1 sm:gap-2 text-xs text-center w-full">
+          <div className={`p-2 rounded ${acPower ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-600'}`}>
+            AC Power
           </div>
-
-          {/* Blackout Status */}
-          <div className={`flex-1 min-w-20 p-3 sm:p-4 rounded-lg text-center transition-all ${blackout ? 'bg-red-100 text-red-800 border-2 border-red-300' : 'bg-gray-100 text-gray-600 border-2 border-gray-300'}`}>
-            <div className={`w-8 h-8 sm:w-10 sm:h-10 mx-auto mb-2 rounded-full ${blackout ? 'bg-red-500' : 'bg-gray-400'} flex items-center justify-center shadow-lg`}>
-              <span className="text-white text-xs font-bold">⚡</span>
-            </div>
-            <div className="text-xs sm:text-sm font-medium">Blackout</div>
+          <div className={`p-2 rounded ${dcPower ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-600'}`}>
+            DC Power
+          </div>
+          <div className={`p-2 rounded ${backupBattery ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-600'}`}>
+            Backup Battery
+          </div>
+          <div className={`p-2 rounded ${alarm ? 'bg-yellow-100 text-yellow-800' : 'bg-gray-100 text-gray-600'}`}>
+            {alarm ? 'Alarm Active' : 'No Alarm'}
           </div>
         </div>
+        
+        {blackout && (
+          <div className="mt-1 sm:mt-2 px-2 sm:px-3 py-1 bg-red-100 text-red-800 text-xs rounded-full font-medium">
+            Blackout Detected
+          </div>
+        )}
       </div>
-      
-      {/* Critical Alert */}
-      {blackout && (
-        <>
-          <div className={`p-3 sm:p-4 rounded-lg text-center transition-all ${acPower ? 'bg-green-100 text-green-800 border-2 border-green-300' : 'bg-gray-100 text-gray-600 border-2 border-gray-300'}`}>
-            <div className={`w-8 h-8 sm:w-10 sm:h-10 mx-auto mb-2 rounded-full ${acPower ? 'bg-green-500' : 'bg-gray-400'} flex items-center justify-center shadow-lg`}>
-              <span className="text-white text-xs sm:text-sm font-bold">AC</span>
-            </div>
-            <div className="text-xs sm:text-sm font-medium">AC Power</div>
-          </div>
-
-          <div className="mt-6 p-3 bg-red-100 border-2 border-red-300 text-red-800 text-sm rounded-lg font-semibold text-center">
-            ⚠️ BLACKOUT DETECTED - IMMEDIATE ACTION REQUIRED
-          </div>
-        </>
-      )}
     </div>
   );
 }

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
-import { SystemConfigProvider } from './contexts/SystemConfigContext';
 import LoginPage from './components/Auth/LoginPage';
 import Sidebar from './components/Layout/Sidebar';
 import Header from './components/Layout/Header';
@@ -12,7 +11,6 @@ import DailyReport from './components/Monitoring/DailyReport';
 import UserManagement from './components/Configuration/UserManagement';
 import VesselManagement from './components/Configuration/VesselManagement';
 import VesselTypeManagement from './components/Configuration/VesselTypeManagement';
-import SystemSettings from './components/Configuration/SystemSettings';
 
 function MainApp() {
   const { isAuthenticated } = useAuth();
@@ -40,8 +38,6 @@ function MainApp() {
         return <VesselManagement />;
       case 'vessel-types':
         return <VesselTypeManagement />;
-      case 'settings':
-        return <SystemSettings />;
       default:
         return <DashboardOverview />;
     }
@@ -65,11 +61,9 @@ function MainApp() {
 
 function App() {
   return (
-    <SystemConfigProvider>
-      <AuthProvider>
-        <MainApp />
-      </AuthProvider>
-    </SystemConfigProvider>
+    <AuthProvider>
+      <MainApp />
+    </AuthProvider>
   );
 }
 

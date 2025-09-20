@@ -21,45 +21,29 @@ export default function AnalogGauge({
   warningThreshold,
   criticalThreshold
 }: AnalogGaugeProps) {
-  // Determine if this is an RPM gauge or heading gauge
+  // For RPM gauges, calculate needle position based on value/1000 for 0-5 scale
   const isRPMGauge = label.toLowerCase().includes('rpm') || label.toLowerCase().includes('engine');
-  const isHeadingGauge = label.toLowerCase().includes('heading');
+  const displayValue = isRPMGauge ? value / 1000 : value;
+  const gaugeMax = isRPMGauge ? 5 : max; // RPM gauges have 0-5 scale (x1000)
+  const gaugeMin = isRPMGauge ? 0 : min;
   
-  // Calculate needle rotation angle
-  let needleAngle = 0;
+  const percentage = Math.max(0, Math.min(100, ((displayValue - gaugeMin) / (gaugeMax - gaugeMin)) * 100));
   
-  if (isRPMGauge) {
-    // RPM: nilai/1000, range 0-5, gauge shows 225 degrees (from -112.5 to +112.5)
-    const displayValue = value / 1000;
-    const percentage = Math.max(0, Math.min(100, (displayValue / 5) * 100));
-    needleAngle = -112.5 + (percentage / 100) * 225;
-  } else if (isHeadingGauge) {
-    // Heading: 0-360 degrees, full circle
-    needleAngle = value;
-  } else {
-    // Other gauges: use percentage of range
-    const percentage = Math.max(0, Math.min(100, ((value - min) / (max - min)) * 100));
-    needleAngle = -112.5 + (percentage / 100) * 225;
-  }
+  // Calculate needle rotation angle (gauge shows 270 degrees, from -135 to +135)
+  const needleAngle = -135 + (percentage / 100) * 270;
 
-  const getBackgroundImage = () => {
-    if (isRPMGauge) {
-      return '/background_RPM .png';
-    } else if (isHeadingGauge) {
-      return '/background_heading copy.png';
+  const getGaugeImage = () => {
+    if (label.toLowerCase().includes('rpm') || label.toLowerCase().includes('engine')) {
+      return '/engine rpm.jpeg';
     }
-    // Default to RPM background for other gauges
-    return '/background_RPM .png';
-  };
-
-  const getNeedleImage = () => {
-    if (isRPMGauge) {
-      return '/needle_RPM.png';
-    } else if (isHeadingGauge) {
-      return '/needle_heading.png';
+    if (label.toLowerCase().includes('fuel')) {
+      return '/engine fuel.jpeg';
     }
-    // Default to RPM needle for other gauges
-    return '/needle_RPM.png';
+    if (label.toLowerCase().includes('heading')) {
+      return '/gps heading.jpeg';
+    }
+    // Default to RPM gauge for speed and other measurements
+    return '/engine rpm.jpeg';
   };
 
   const getStatusColor = () => {
@@ -72,65 +56,73 @@ export default function AnalogGauge({
     return 'text-green-600 bg-green-100';
   };
 
-  const getDisplayValue = () => {
-    if (isRPMGauge) {
-      return Math.round(value).toString();
-    } else if (isHeadingGauge) {
-      return Math.round(value).toString();
-    }
-    return value.toFixed(1);
-  };
-
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 sm:p-6">
+    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-3 sm:p-6">
       <div className="flex flex-col items-center">
-        <h3 className="text-sm sm:text-base font-semibold text-gray-700 mb-3 sm:mb-4 text-center">{label}</h3>
+        <h3 className="text-xs sm:text-sm font-medium text-gray-600 mb-2 sm:mb-4 text-center">{label}</h3>
         
-        <div className="relative w-48 h-48 sm:w-64 sm:h-64 lg:w-72 lg:h-72 mb-3 sm:mb-4">
-          {/* Background gauge image */}
+        <div className="relative w-32 h-32 sm:w-48 sm:h-48 mb-2 sm:mb-4">
           <img 
-            src={getBackgroundImage()} 
-            alt={`${label} background`}
-            className="w-full h-full object-contain"
+            src={getGaugeImage()} 
+            alt={label}
+            className="w-full h-full object-cover rounded-full shadow-lg relative"
           />
           
-          {/* Needle overlay */}
-          <div className="absolute inset-0 flex items-center justify-center">
-            <img
-              src={getNeedleImage()}
-              alt={`${label} needle`}
-              className="absolute w-full h-full object-contain transition-transform duration-500 ease-out"
-              style={{
-                transform: `rotate(${needleAngle}deg)`,
-                transformOrigin: 'center center'
-              }}
-            />
-          </div>
-          
-          {/* Digital value display */}
-          <div className="absolute bottom-8 sm:bottom-12 left-1/2 transform -translate-x-1/2">
-            <div className="bg-black bg-opacity-90 text-green-400 px-3 py-2 rounded text-sm sm:text-base font-mono border border-gray-600 min-w-20 text-center shadow-lg">
-              {isRPMGauge ? (
-                getDisplayValue().padStart(4, '0')
-              ) : isHeadingGauge ? (
-                `${getDisplayValue().padStart(3, '0')}°`
-              ) : (
-                `${getDisplayValue()} ${unit}`
-              )}
+          {/* Needle overlay for RPM gauges */}
+          {isRPMGauge && (
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div 
+                className="w-1 bg-red-600 origin-bottom absolute"
+                style={{
+                  height: '35%',
+                  transform: `rotate(${needleAngle}deg)`,
+                  transformOrigin: 'bottom center',
+                  bottom: '50%'
+                }}
+              />
+              {/* Center dot */}
+              <div className="w-3 h-3 bg-gray-300 rounded-full border-2 border-gray-600 absolute"></div>
             </div>
-          </div>
+          )}
+          
+          {/* RPM value display in running hours box */}
+          {isRPMGauge && (
+            <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2">
+              <div className="bg-gray-800 text-green-400 px-2 py-1 rounded text-xs font-mono border border-gray-600">
+                {Math.round(value).toString().padStart(6, '0')}
+              </div>
+            </div>
+          )}
+          
+          {/* Standard overlay for non-RPM gauges */}
+          {!isRPMGauge && (
+            <div className="absolute inset-0 flex flex-col items-center justify-center">
+              <div className="bg-black bg-opacity-70 text-white px-2 sm:px-3 py-1 sm:py-2 rounded-lg mt-12 sm:mt-20">
+                <div className="text-center">
+                  <span className="text-lg sm:text-2xl font-bold">
+                    {value.toFixed(1)}
+                  </span>
+                  <div className="text-xs sm:text-xs opacity-80">{unit}</div>
+                </div>
+              </div>
+            </div>
+          )}
+          
+          {/* Heading gauge special display */}
+          {label.toLowerCase().includes('heading') && (
+            <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
+              <div className="bg-gray-800 text-green-400 px-2 py-1 rounded text-xs font-mono border border-gray-600">
+                {Math.round(value).toString().padStart(3, '0')}°
+              </div>
+            </div>
+          )}
         </div>
         
-        {/* Scale labels */}
+        {/* Scale labels for RPM gauges */}
         {isRPMGauge ? (
           <div className="flex justify-between w-full text-xs text-gray-500 mb-1 sm:mb-2">
             <span>0</span>
             <span>5</span>
-          </div>
-        ) : isHeadingGauge ? (
-          <div className="flex justify-between w-full text-xs text-gray-500 mb-1 sm:mb-2">
-            <span>0°</span>
-            <span>360°</span>
           </div>
         ) : (
           <div className="flex justify-between w-full text-xs text-gray-500 mb-1 sm:mb-2">
@@ -142,22 +134,20 @@ export default function AnalogGauge({
         {/* Status indicator */}
         <div className={`px-2 sm:px-3 py-1 rounded-full text-xs font-medium ${getStatusColor()}`}>
           {isRPMGauge ? (
-            value > 4500 ? 'High RPM' : 
-            value > 2000 ? 'Normal' : 
-            value < 500 ? 'Low RPM' : 'Normal'
-          ) : isHeadingGauge ? (
-            'Normal'
+            displayValue > 4.5 ? 'High RPM' : 
+            displayValue > 3.5 ? 'Normal' : 
+            displayValue < 0.5 ? 'Low RPM' : 'Normal'
           ) : (
-            ((value - min) / (max - min)) * 100 > 95 ? 'Critical' : 
-            ((value - min) / (max - min)) * 100 > 80 ? 'High' : 
-            ((value - min) / (max - min)) * 100 < 20 ? 'Low' : 'Normal'
+            percentage > 95 ? 'Critical' : 
+            percentage > 80 ? 'High' : 
+            percentage < 20 ? 'Low' : 'Normal'
           )}
         </div>
         
-        {/* Unit display for RPM */}
+        {/* RPM unit display */}
         {isRPMGauge && (
           <div className="text-xs text-gray-500 mt-1 text-center">
-            RPM
+            x1000 RPM
           </div>
         )}
       </div>
